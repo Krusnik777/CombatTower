@@ -4,10 +4,10 @@ using UnityEngine.Audio;
 using Loading;
 using R3;
 using DI;
-using UnityR3ProjectTemplate.Game.EntryPoints;
-using UnityR3ProjectTemplate.Game.Services;
+using CombatTower.Game.EntryPoints;
+using CombatTower.Game.Services;
 
-namespace UnityR3ProjectTemplate.Game.Root
+namespace CombatTower.Game.Root
 {
     public class GameEntryPoint
     {

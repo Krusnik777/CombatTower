@@ -2,7 +2,7 @@ using System;
 using R3;
 using UnityEngine.InputSystem;
 
-namespace UnityR3ProjectTemplate.Game.Services
+namespace CombatTower.Game.Services
 {
     public class InputDeviceDetectService : IDisposable
     {

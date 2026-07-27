@@ -2,7 +2,7 @@ using DI;
 using R3;
 using UnityEngine;
 
-namespace UnityR3ProjectTemplate.Game.EntryPoints
+namespace CombatTower.Game.EntryPoints
 {
     public abstract class EntryPoint<TEnterParams,TExitParams> : MonoBehaviour where TEnterParams : SceneEnterParameters where TExitParams : SceneExitParameters
     {

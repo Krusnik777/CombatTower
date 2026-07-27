@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UI.Windows;
 
-namespace UnityR3ProjectTemplate.Game.Services
+namespace CombatTower.Game.Services
 {
     public class UIWindowsProvider : IDisposable
     {

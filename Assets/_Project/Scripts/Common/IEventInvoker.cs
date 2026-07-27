@@ -1,4 +1,4 @@
-namespace UnityR3ProjectTemplate
+namespace CombatTower
 {
     public interface IEventInvoker
     {

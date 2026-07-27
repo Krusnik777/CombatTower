@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace UnityR3ProjectTemplate.Game.Services
+namespace CombatTower.Game.Services
 {
     public class AudioService : System.IDisposable
     {

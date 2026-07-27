@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using UnityR3ProjectTemplate.Game.Root.Sounds;
+using CombatTower.Game.Root.Sounds;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace UnityR3ProjectTemplate.Game.Services
+namespace CombatTower.Game.Services
 {
     public class SoundService
     {

@@ -1,4 +1,4 @@
-namespace UnityR3ProjectTemplate.Game.Root
+namespace CombatTower.Game.Root
 {
     public static class GameplayTags
     {

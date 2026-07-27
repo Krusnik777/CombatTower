@@ -1,7 +1,7 @@
 ﻿using Loading;
 using UnityEngine;
 
-namespace UnityR3ProjectTemplate.Game.Root
+namespace CombatTower.Game.Root
 {
     public class UIRootView : MonoBehaviour
     {

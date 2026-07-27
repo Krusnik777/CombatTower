@@ -1,4 +1,4 @@
-namespace UnityR3ProjectTemplate.Game.Root.Sounds
+namespace CombatTower.Game.Root.Sounds
 {
     [System.Serializable]
     public struct SoundData

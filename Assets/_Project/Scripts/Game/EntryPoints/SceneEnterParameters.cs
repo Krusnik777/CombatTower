@@ -1,4 +1,4 @@
-﻿namespace UnityR3ProjectTemplate.Game.EntryPoints
+﻿namespace CombatTower.Game.EntryPoints
 {
     public abstract class SceneEnterParameters
     {

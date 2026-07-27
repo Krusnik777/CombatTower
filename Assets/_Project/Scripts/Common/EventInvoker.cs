@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityR3ProjectTemplate
+namespace CombatTower
 {
     public class EventInvoker : IEventInvoker
     {

@@ -1,6 +1,6 @@
-using UnityR3ProjectTemplate.Game.Root;
+using CombatTower.Game.Root;
 
-namespace UnityR3ProjectTemplate.Game.EntryPoints
+namespace CombatTower.Game.EntryPoints
 {
     public class GameplayEnterParameters : SceneEnterParameters
     {

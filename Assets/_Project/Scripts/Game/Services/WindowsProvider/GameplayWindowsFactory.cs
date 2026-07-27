@@ -3,7 +3,7 @@ using UnityEngine;
 using Screen = UI.Windows.Screen;
 using WindowView = UI.Windows.WindowView;
 
-namespace UnityR3ProjectTemplate.Game.Services
+namespace CombatTower.Game.Services
 {
     public class GameplayWindowsFactory : IWindowsFactory
     {

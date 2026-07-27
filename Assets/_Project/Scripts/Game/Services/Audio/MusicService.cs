@@ -3,7 +3,7 @@ using R3;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace UnityR3ProjectTemplate.Game.Services
+namespace CombatTower.Game.Services
 {
     public class MusicService : IDisposable
     {

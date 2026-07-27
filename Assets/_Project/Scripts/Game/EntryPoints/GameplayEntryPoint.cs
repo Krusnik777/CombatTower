@@ -1,11 +1,11 @@
 using DI;
-using UnityR3ProjectTemplate.Game.Root;
-using UnityR3ProjectTemplate.Game.Services;
+using CombatTower.Game.Root;
+using CombatTower.Game.Services;
 using UI;
 using R3;
 using UnityEngine;
 
-namespace UnityR3ProjectTemplate.Game.EntryPoints
+namespace CombatTower.Game.EntryPoints
 {
     public class GameplayEntryPoint : EntryPoint<GameplayEnterParameters,GameplayExitParameters>
     {

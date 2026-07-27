@@ -1,7 +1,7 @@
 using Screen = UI.Windows.Screen;
 //using Popup = UI.Windows.Popup;
 
-namespace UnityR3ProjectTemplate.Game.Services
+namespace CombatTower.Game.Services
 {
     public interface IWindowsFactory
     {
