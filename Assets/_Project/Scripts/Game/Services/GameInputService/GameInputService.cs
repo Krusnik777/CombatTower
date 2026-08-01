@@ -50,7 +50,7 @@ namespace CombatTower.Game.Services
             _gameInput.Player.LockOn.performed -= OnLockOn;
         }
 
-        public Vector3 GetMovementInput(bool isInverse = true)
+        public Vector3 GetMovementInput(bool isInverse = false)
         {
             var input = _gameInput.Player.Move.ReadValue<Vector2>();
             if (isInverse) input *= -1f;
