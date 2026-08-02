@@ -6,13 +6,12 @@ namespace CombatTower.Game.Gameplay.Entities.Player
     public class PlayerAvatarMovement : MonoBehaviour
     {
         [SerializeField] private Rigidbody m_characterRigidbody;
-        [SerializeField] private float m_movementSpeed = 5f;
-        [SerializeField] private float m_rotateSpeed = 500f;
 
-        public Vector3 DirectionControl => _directionControl;
         public bool IsControlledByRootMotion { get; set; }
 
         private GameInputService _gameInputService;
+        private float _movementSpeed;
+        private float _rotationSpeed;
 
         private Vector3 _directionControl;
         private Transform _lookTargetTransform;
@@ -21,17 +20,21 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         public Vector3 GetLocalLookDirection() => m_characterRigidbody.transform.InverseTransformDirection(_directionControl);
 
-        public void Bind(GameInputService gameInputService)
+        public void Bind(GameInputService gameInputService, float movementSpeed = 1f, float rotationSpeed = 1f)
         {
             _gameInputService = gameInputService;
+            _movementSpeed = movementSpeed;
+            _rotationSpeed = rotationSpeed;
         }
+
         public void SetActive(bool state) => _isActive = state;
+        public void SetLookTransform(Transform target) => _lookTargetTransform = target;
+
         public void Stop()
         {
             m_characterRigidbody.linearVelocity = Vector3.zero;
             m_characterRigidbody.angularVelocity = Vector3.zero;
         }
-        public void SetLookTransform(Transform target) => _lookTargetTransform = target;
 
         public void Teleport(Transform targetPlace)
         {
@@ -57,8 +60,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                     targetRotation = Quaternion.LookRotation(directionToTarget);
                 }
 
-                m_characterRigidbody.linearVelocity = _directionControl * m_movementSpeed * Time.fixedDeltaTime;
-                m_characterRigidbody.rotation = Quaternion.Lerp(m_characterRigidbody.rotation, targetRotation, m_rotateSpeed * Time.fixedDeltaTime);
+                m_characterRigidbody.linearVelocity = _directionControl * _movementSpeed * Time.fixedDeltaTime;
+                m_characterRigidbody.rotation = Quaternion.Lerp(m_characterRigidbody.rotation, targetRotation, _rotationSpeed * Time.fixedDeltaTime);
             }
             else
             {
@@ -80,7 +83,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         private void GetMoveDirection()
         {
-            if (_gameInputService == null) return;
+            if (_gameInputService == null)
+            {
+                _directionControl = Vector3.zero;
+                return;
+            }
 
             var moveDirection = _gameInputService.GetMovementInput();
             _directionControl = moveDirection;

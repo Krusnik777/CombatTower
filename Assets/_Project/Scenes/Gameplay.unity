@@ -707,10 +707,13 @@ PrefabInstance:
       addedObject: {fileID: 1371145735}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 06fa51a853280e1499d8bdf5ead150c2, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1371145737}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 06fa51a853280e1499d8bdf5ead150c2, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1371145734}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 06fa51a853280e1499d8bdf5ead150c2, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1371145733}
+      addedObject: {fileID: 1371145738}
   m_SourcePrefab: {fileID: 100100000, guid: 06fa51a853280e1499d8bdf5ead150c2, type: 3}
 --- !u!4 &1371145730 stripped
 Transform:
@@ -727,20 +730,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 06fa51a853280e1499d8bdf5ead150c2, type: 3}
   m_PrefabInstance: {fileID: 1371145729}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1371145733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371145731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c17a0b59736f8547a7afa408b27671d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Player.PlayerAvatarAnimator
-  m_characterRigidbody: {fileID: 1371145735}
-  m_animator: {fileID: 1371145732}
 --- !u!114 &1371145734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -754,8 +743,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Player.PlayerAvatarMovement
   m_characterRigidbody: {fileID: 1371145735}
-  m_movementSpeed: 250
-  m_rotateSpeed: 500
 --- !u!54 &1371145735
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -806,6 +793,34 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.91, z: 0}
+--- !u!114 &1371145737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371145731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c85ed4d8d4ee6824dbb34b84f5376f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Player.PlayerView
+  <Animator>k__BackingField: {fileID: 1371145732}
+  <Rigidbody>k__BackingField: {fileID: 1371145735}
+  <Movement>k__BackingField: {fileID: 1371145734}
+  <EventsCollector>k__BackingField: {fileID: 1371145738}
+--- !u!114 &1371145738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371145731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 527cd7ffbf9fbbf45907f8dff9d90bd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.AnimatorEventsCollector
 --- !u!1 &1377827673
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,8 +1317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnityR3ProjectTemplate.Game.EntryPoints.GameplayEntryPoint
   m_sceneUIRootPrefab: {fileID: 4109014006076167516, guid: 39bf2a5abfe528147a78025542a77ca8, type: 3}
-  m_playerMovement: {fileID: 1371145734}
-  m_playerAnimator: {fileID: 1371145733}
+  m_playerView: {fileID: 1371145737}
 --- !u!4 &2117270561
 Transform:
   m_ObjectHideFlags: 0

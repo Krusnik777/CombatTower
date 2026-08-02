@@ -11,14 +11,9 @@ namespace CombatTower.Game.EntryPoints
     public class GameplayEntryPoint : EntryPoint<GameplayEnterParameters,GameplayExitParameters>
     {
         [SerializeField] private UISceneRootView m_sceneUIRootPrefab;
-        [SerializeField] private PlayerAvatarMovement m_playerMovement;
-        [SerializeField] private PlayerAvatarAnimator m_playerAnimator;
+        [SerializeField] private PlayerView m_playerView;
 
         private Subject<GameplayExitParameters> _onEnd;
-
-        private System.IDisposable _testDisposable;
-        private System.IDisposable _testDisposable2;
-        private bool _playingAttack;
 
         public override Observable<GameplayExitParameters> Run(DIContainer sceneContainer, GameplayEnterParameters enterParameters)
         {
@@ -44,8 +39,7 @@ namespace CombatTower.Game.EntryPoints
 
         private void DisposeOfListeners()
         {
-            _testDisposable?.Dispose();
-            _testDisposable2?.Dispose();
+            
         }
 
         private void RegisterLocalInstances(DIContainer sceneContainer, GameplayEnterParameters enterParameters)
@@ -58,7 +52,10 @@ namespace CombatTower.Game.EntryPoints
             sceneContainer.RegisterInstance(GameplayTags.NEXT, nextInvoker as IEventInvoker);
             sceneContainer.RegisterInstance(GameplayTags.EXIT, exitInvoker as IEventInvoker);
 
-            var inputService = sceneContainer.Resolve<GameInputService>();
+            var player = new Player(m_playerView, sceneContainer);
+            sceneContainer.RegisterInstance(player);
+
+            /*var inputService = sceneContainer.Resolve<GameInputService>();
             m_playerMovement.Bind(inputService);
             m_playerAnimator.Bind(m_playerMovement);
 
@@ -81,7 +78,7 @@ namespace CombatTower.Game.EntryPoints
                     m_playerMovement.SetActive(true);
                     _playingAttack = false;
                 });
-            });
+            });*/
         }
 
         private void SetupUI(DIContainer sceneContainer)

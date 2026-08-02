@@ -131,7 +131,7 @@ namespace CombatTower
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""AbilityX"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""6c2ab1b8-8984-453a-af3d-a3c78ae1679a"",
                     ""expectedControlType"": """",
@@ -331,7 +331,7 @@ namespace CombatTower
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""AbilityX"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -342,7 +342,7 @@ namespace CombatTower
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""AbilityX"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1070,7 +1070,7 @@ namespace CombatTower
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_AbilityA = m_Player.FindAction("AbilityA", throwIfNotFound: true);
             m_Player_AbilityB = m_Player.FindAction("AbilityB", throwIfNotFound: true);
-            m_Player_AbilityX = m_Player.FindAction("AbilityX", throwIfNotFound: true);
+            m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
             m_Player_AbilityY = m_Player.FindAction("AbilityY", throwIfNotFound: true);
             m_Player_LockOn = m_Player.FindAction("LockOn", throwIfNotFound: true);
             // UI
@@ -1175,7 +1175,7 @@ namespace CombatTower
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_AbilityA;
         private readonly InputAction m_Player_AbilityB;
-        private readonly InputAction m_Player_AbilityX;
+        private readonly InputAction m_Player_Attack;
         private readonly InputAction m_Player_AbilityY;
         private readonly InputAction m_Player_LockOn;
         /// <summary>
@@ -1206,9 +1206,9 @@ namespace CombatTower
             /// </summary>
             public InputAction @AbilityB => m_Wrapper.m_Player_AbilityB;
             /// <summary>
-            /// Provides access to the underlying input action "Player/AbilityX".
+            /// Provides access to the underlying input action "Player/Attack".
             /// </summary>
-            public InputAction @AbilityX => m_Wrapper.m_Player_AbilityX;
+            public InputAction @Attack => m_Wrapper.m_Player_Attack;
             /// <summary>
             /// Provides access to the underlying input action "Player/AbilityY".
             /// </summary>
@@ -1255,9 +1255,9 @@ namespace CombatTower
                 @AbilityB.started += instance.OnAbilityB;
                 @AbilityB.performed += instance.OnAbilityB;
                 @AbilityB.canceled += instance.OnAbilityB;
-                @AbilityX.started += instance.OnAbilityX;
-                @AbilityX.performed += instance.OnAbilityX;
-                @AbilityX.canceled += instance.OnAbilityX;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
                 @AbilityY.started += instance.OnAbilityY;
                 @AbilityY.performed += instance.OnAbilityY;
                 @AbilityY.canceled += instance.OnAbilityY;
@@ -1287,9 +1287,9 @@ namespace CombatTower
                 @AbilityB.started -= instance.OnAbilityB;
                 @AbilityB.performed -= instance.OnAbilityB;
                 @AbilityB.canceled -= instance.OnAbilityB;
-                @AbilityX.started -= instance.OnAbilityX;
-                @AbilityX.performed -= instance.OnAbilityX;
-                @AbilityX.canceled -= instance.OnAbilityX;
+                @Attack.started -= instance.OnAttack;
+                @Attack.performed -= instance.OnAttack;
+                @Attack.canceled -= instance.OnAttack;
                 @AbilityY.started -= instance.OnAbilityY;
                 @AbilityY.performed -= instance.OnAbilityY;
                 @AbilityY.canceled -= instance.OnAbilityY;
@@ -1732,12 +1732,12 @@ namespace CombatTower
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnAbilityB(InputAction.CallbackContext context);
             /// <summary>
-            /// Method invoked when associated input action "AbilityX" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnAbilityX(InputAction.CallbackContext context);
+            void OnAttack(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "AbilityY" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
