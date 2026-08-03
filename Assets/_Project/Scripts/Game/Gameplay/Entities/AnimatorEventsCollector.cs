@@ -17,19 +17,19 @@ namespace CombatTower.Game.Gameplay.Entities
             OnFootstep?.OnNext(legIndex);
         }
 
-        public void OnAttackStarted(int attackType)
+        public void OnAttackStarted(int comboNumber)
         {
-            OnAttackStart?.OnNext(attackType);
+            OnAttackStart?.OnNext(comboNumber);
         }
 
-        public void OnAttackExecuted(int attackType)
+        public void OnAttackExecuted(int comboNumber)
         {
-            OnAttackExecute?.OnNext(attackType);
+            OnAttackExecute?.OnNext(comboNumber);
         }
 
-        public void OnAttackFinished(int attackType)
+        public void OnAttackFinished(int comboNumber)
         {
-            OnAttackFinish?.OnNext(attackType);
+            OnAttackFinish?.OnNext(comboNumber);
         }
 
         public void OnEquip()

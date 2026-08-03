@@ -1,4 +1,5 @@
 using CombatTower.Game.Services;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace CombatTower.Game.Gameplay.Entities.Player
@@ -14,6 +15,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private float _rotationSpeed;
 
         private Vector3 _directionControl;
+        private Vector3 _rotationDirectionControl;
         private Transform _lookTargetTransform;
 
         private bool _isActive = true;
@@ -24,6 +26,12 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             _gameInputService = gameInputService;
             _movementSpeed = movementSpeed;
+            _rotationSpeed = rotationSpeed;
+        }
+
+        public void SetRotationDirection(Vector3 direction, float rotationSpeed = 1f)
+        {
+            _rotationDirectionControl = direction;
             _rotationSpeed = rotationSpeed;
         }
 
@@ -66,6 +74,19 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             else
             {
                 m_characterRigidbody.linearVelocity = Vector3.zero;
+
+                if (_rotationDirectionControl != Vector3.zero)
+                {
+                    var targetRotation = Quaternion.LookRotation(_rotationDirectionControl);
+                    m_characterRigidbody.rotation = Quaternion.Lerp(m_characterRigidbody.rotation, targetRotation, _rotationSpeed * Time.fixedDeltaTime);
+
+                    var angle = Quaternion.Angle(m_characterRigidbody.rotation, targetRotation);
+                    if (angle <= 5)
+                    {
+                        m_characterRigidbody.rotation = targetRotation;
+                        _rotationDirectionControl = Vector3.zero;
+                    }
+                }
             }
         }
 

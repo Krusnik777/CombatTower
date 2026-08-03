@@ -49,7 +49,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         private void UpdateAnimatorMovement()
         {
-            if (_player.Movement == null) return;
+            if (_player.Movement == null)
+            {
+                _animatorMovementUpdateDisposable?.Dispose();
+                return;
+            }
 
             var localLookDirection = _player.Movement.GetLocalLookDirection();
 
