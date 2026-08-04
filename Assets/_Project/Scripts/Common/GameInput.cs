@@ -156,6 +156,15 @@ namespace CombatTower
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dodge"",
+                    ""type"": ""Button"",
+                    ""id"": ""24a5a649-7485-4918-bfcb-bf458f92cee8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -431,6 +440,28 @@ namespace CombatTower
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da11d25e-81fd-4272-ae8c-a1f7ecdce3a1"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb189dd9-0770-433d-9d12-39d08d93c4bd"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1073,6 +1104,7 @@ namespace CombatTower
             m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
             m_Player_AbilityY = m_Player.FindAction("AbilityY", throwIfNotFound: true);
             m_Player_LockOn = m_Player.FindAction("LockOn", throwIfNotFound: true);
+            m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1178,6 +1210,7 @@ namespace CombatTower
         private readonly InputAction m_Player_Attack;
         private readonly InputAction m_Player_AbilityY;
         private readonly InputAction m_Player_LockOn;
+        private readonly InputAction m_Player_Dodge;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1217,6 +1250,10 @@ namespace CombatTower
             /// Provides access to the underlying input action "Player/LockOn".
             /// </summary>
             public InputAction @LockOn => m_Wrapper.m_Player_LockOn;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/Dodge".
+            /// </summary>
+            public InputAction @Dodge => m_Wrapper.m_Player_Dodge;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1264,6 +1301,9 @@ namespace CombatTower
                 @LockOn.started += instance.OnLockOn;
                 @LockOn.performed += instance.OnLockOn;
                 @LockOn.canceled += instance.OnLockOn;
+                @Dodge.started += instance.OnDodge;
+                @Dodge.performed += instance.OnDodge;
+                @Dodge.canceled += instance.OnDodge;
             }
 
             /// <summary>
@@ -1296,6 +1336,9 @@ namespace CombatTower
                 @LockOn.started -= instance.OnLockOn;
                 @LockOn.performed -= instance.OnLockOn;
                 @LockOn.canceled -= instance.OnLockOn;
+                @Dodge.started -= instance.OnDodge;
+                @Dodge.performed -= instance.OnDodge;
+                @Dodge.canceled -= instance.OnDodge;
             }
 
             /// <summary>
@@ -1752,6 +1795,13 @@ namespace CombatTower
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnLockOn(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Dodge" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnDodge(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

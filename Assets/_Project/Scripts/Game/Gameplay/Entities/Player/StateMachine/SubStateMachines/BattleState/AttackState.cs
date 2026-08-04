@@ -8,9 +8,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 {
     public class AttackState : IEnterableState
     {
-        private const string _attackComboTrigger = "AttackCombo";
+        private const string _attackComboStartTrigger = "AttackComboStart";
+        private const string _attackComboInt = "AttackCombo";
         private const int _maxCombo = 5;
-        private const float _comboWindowMs = 200; 
+        private const float _comboWindowMs = 200f;
+        private const float _rotationSpeedInCombo = 10f; // temp
 
         private IStateMachine _parentStateMachine;
         private DIContainer _sceneContainer;
@@ -21,6 +23,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private bool _isChainable;
 
         private IDisposable _comboWindowListenerDisposable;
+        private IDisposable _dodgeListenerDisposable;
         private CompositeDisposable _attackEventsListenerDisposables;
 
         public AttackState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer)
@@ -33,7 +36,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         public void Enter()
         {
-            _attackEventsListenerDisposables?.Dispose();
+            DisposeOfListeners();
+            
             _attackEventsListenerDisposables = new()
             {
                 _player.EventsCollector.OnAttackStart.Subscribe(OnAttackStarted),
@@ -42,19 +46,35 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 _gameInputService.OnAttackPressed.Subscribe(_ => OnAttackPressed())
             };
 
+            _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ =>
+            {
+                DisposeOfListeners();
+
+                _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Dodge);
+
+                return;
+            });
+
             _currentCombo = 1;
 
             _player.Movement.IsControlledByRootMotion = true;
             _player.Movement.SetRotationDirection(UnityEngine.Vector3.zero);
-            _player.Animator.SetTrigger(_attackComboTrigger + _currentCombo.ToString());
+            _player.Animator.SetInteger(_attackComboInt, _currentCombo);
+            _player.Animator.SetTrigger(_attackComboStartTrigger);
         }
 
         public void Exit()
         {
             _player.Movement.IsControlledByRootMotion = false;
 
+            DisposeOfListeners();
+        }
+
+        private void DisposeOfListeners()
+        {
             _attackEventsListenerDisposables?.Dispose();
             _comboWindowListenerDisposable?.Dispose();
+            _dodgeListenerDisposable?.Dispose();
         }
 
         private void OnAttackStarted(int comboNumber)
@@ -82,8 +102,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 StopListenToCombo();
                 _currentCombo++;
 
-                _player.Movement.SetRotationDirection(_gameInputService.GetMovementInput(), 10f);
-                _player.Animator.SetTrigger(_attackComboTrigger + _currentCombo.ToString());
+                _player.Movement.SetRotationDirection(_gameInputService.GetMovementInput(), _rotationSpeedInCombo);
+                //_player.Animator.SetTrigger(_attackComboStartTrigger + _currentCombo.ToString());
+                _player.Animator.SetInteger(_attackComboInt, _currentCombo);
             }
         }
 

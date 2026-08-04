@@ -5,12 +5,16 @@ namespace CombatTower.Game.Gameplay.Entities
 {
     public class AnimatorEventsCollector : MonoBehaviour
     {
-        public Subject<int> OnFootstep { get; private set;} = new();
-        public Subject<int> OnAttackStart { get; private set;} = new();
-        public Subject<int> OnAttackExecute { get; private set;} = new();
-        public Subject<int> OnAttackFinish { get; private set;} = new();
-        public Subject<Unit> OnEquipWeapon { get; private set;} = new();
-        public Subject<Unit> OnDisarmWeapon { get; private set;} = new();
+        public Subject<int> OnFootstep { get; private set; } = new();
+
+        public Subject<int> OnAttackStart { get; private set; } = new();
+        public Subject<int> OnAttackExecute { get; private set; } = new();
+        public Subject<int> OnAttackFinish { get; private set; } = new();
+
+        public Subject<Unit> OnDodgeEnd { get; private set; } = new();
+
+        public Subject<Unit> OnEquipWeapon { get; private set; } = new();
+        public Subject<Unit> OnDisarmWeapon { get; private set; } = new();
 
         public void OnStep(int legIndex)
         {
@@ -40,6 +44,11 @@ namespace CombatTower.Game.Gameplay.Entities
         public void OnDisarm()
         {
             OnDisarmWeapon?.OnNext(Unit.Default);
+        }
+
+        public void OnDodgePerformed()
+        {
+            OnDodgeEnd?.OnNext(Unit.Default);
         }
     }
 }

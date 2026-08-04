@@ -12,6 +12,8 @@ namespace CombatTower.Game.Services
         public Subject<Unit> OnAbilityBPressed { get; private set; } = new();
         public Subject<Unit> OnAttackPressed { get; private set; } = new();
         public Subject<Unit> OnAbilityYPressed { get; private set; } = new();
+        
+        public Subject<Unit> OnDodgePressed { get; private set; } = new();
         public Subject<Unit> OnLockOnPressed { get; private set; } = new();
 
         private GameInput _gameInput;
@@ -30,6 +32,7 @@ namespace CombatTower.Game.Services
             _uiInputController = new(_gameInput);
 
             _gameInput.Player.Attack.performed += OnAttack;
+            _gameInput.Player.Dodge.performed += OnDodge;
 
             _gameInput.Player.AbilityA.performed += OnAbilityA;
             _gameInput.Player.AbilityB.performed += OnAbilityB;
@@ -44,6 +47,7 @@ namespace CombatTower.Game.Services
             _uiInputController?.Dispose();
 
             _gameInput.Player.Attack.performed -= OnAttack;
+            _gameInput.Player.Dodge.performed -= OnDodge;
 
             _gameInput.Player.AbilityA.performed -= OnAbilityA;
             _gameInput.Player.AbilityB.performed -= OnAbilityB;
@@ -77,6 +81,11 @@ namespace CombatTower.Game.Services
         private void OnAttack(InputAction.CallbackContext context)
         {
             OnAttackPressed?.OnNext(Unit.Default);
+        }
+
+        private void OnDodge(InputAction.CallbackContext context)
+        {
+            OnDodgePressed?.OnNext(Unit.Default);
         }
 
         private void OnAbilityA(InputAction.CallbackContext context)

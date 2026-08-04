@@ -9,7 +9,7 @@ namespace StateMachine
         protected IState _currentState;
         protected IState _previousState;
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             _currentState?.Exit();
             _currentState = null;

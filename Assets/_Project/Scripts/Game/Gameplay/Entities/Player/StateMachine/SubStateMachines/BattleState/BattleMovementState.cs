@@ -8,45 +8,54 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 {
     public class BattleMovementState : MovementState
     {
-        private IStateMachine _playerStateMachine;
-
         private float _targetTime = 10f;
         private float _timer;
 
         private IDisposable _attackListenerDisposable;
+        private IDisposable _dodgeListenerDisposable;
         private IDisposable _returnToCalmTimerListenerDisposable;
 
-        public BattleMovementState(IStateMachine parentStateMachine, Player player, IStateMachine playerStateMachine, DIContainer sceneContainer) : base(parentStateMachine, player, sceneContainer)
-        {
-            _playerStateMachine = playerStateMachine;
-        }
+        public BattleMovementState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer) : base(parentStateMachine, player, sceneContainer) { }
 
         public override void Enter()
         {
             base.Enter();
 
+            DisposeOfListeners();
+
             _player.Animator.SetBool(_battleStateBool, true);
 
-            _attackListenerDisposable?.Dispose();
             _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(_ => OnAttack());
-
-            _returnToCalmTimerListenerDisposable?.Dispose();
+            _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ => OnDodge());
             _returnToCalmTimerListenerDisposable = Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(_ => UpdateTimer());
         }
 
         public override void Exit()
         {
-            _attackListenerDisposable?.Dispose();
-            _returnToCalmTimerListenerDisposable?.Dispose();
+            DisposeOfListeners();
 
             base.Exit();
         }
 
-        private void OnAttack()
+        private void DisposeOfListeners()
         {
             _attackListenerDisposable?.Dispose();
+            _dodgeListenerDisposable?.Dispose();
+            _returnToCalmTimerListenerDisposable?.Dispose();
+        }
+
+        private void OnAttack()
+        {
+            DisposeOfListeners();
             
             _parentStateMachine.SetState<AttackState>();
+        }
+
+        private void OnDodge()
+        {
+            DisposeOfListeners();
+
+            _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Dodge);
         }
 
         private void UpdateTimer()
@@ -56,8 +65,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             if (_timer >= _targetTime)
             {
-                _returnToCalmTimerListenerDisposable?.Dispose();
-                _playerStateMachine.SetState<CalmState>();
+                DisposeOfListeners();
+                
+                _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Timer);
             }
         }
     }

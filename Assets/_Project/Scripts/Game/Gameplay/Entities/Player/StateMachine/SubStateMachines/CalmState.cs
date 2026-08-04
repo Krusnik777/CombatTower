@@ -1,12 +1,14 @@
 using StateMachine;
 using DI;
 using R3;
+using System;
 
 namespace CombatTower.Game.Gameplay.Entities.Player
 {
     public class CalmState : MovementState
     {
-        private System.IDisposable _attackListenerDisposable;
+        private IDisposable _attackListenerDisposable;
+        private IDisposable _dodgeListenerDisposable;
 
         public CalmState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer) : base(parentStateMachine, player, sceneContainer) { }
 
@@ -14,22 +16,37 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             base.Enter();
 
-            _attackListenerDisposable?.Dispose();
+            DisposeOfListeners();
+
             _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(_ => OnAttack());
+            _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ => OnDodge());
         }
 
         public override void Exit()
         {
-            _attackListenerDisposable?.Dispose();
+            DisposeOfListeners();
 
             base.Exit();
         }
 
-        private void OnAttack()
+        private void DisposeOfListeners()
         {
             _attackListenerDisposable?.Dispose();
+            _dodgeListenerDisposable?.Dispose();
+        }
+
+        private void OnAttack()
+        {
+            DisposeOfListeners();
 
             _parentStateMachine.SetState<BattleState, bool>(true);
+        }
+
+        private void OnDodge()
+        {
+            DisposeOfListeners();
+
+            _parentStateMachine.SetState<DodgeState, IState>(this);
         }
     }
 }
