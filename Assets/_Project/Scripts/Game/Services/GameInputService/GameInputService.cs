@@ -12,7 +12,7 @@ namespace CombatTower.Game.Services
         public Subject<Unit> OnAbilityBPressed { get; private set; } = new();
         public Subject<Unit> OnAttackPressed { get; private set; } = new();
         public Subject<Unit> OnAbilityYPressed { get; private set; } = new();
-        
+
         public Subject<Unit> OnDodgePressed { get; private set; } = new();
         public Subject<Unit> OnLockOnPressed { get; private set; } = new();
 
@@ -61,7 +61,29 @@ namespace CombatTower.Game.Services
             var input = _gameInput.Player.Move.ReadValue<Vector2>();
             if (isInverse) input *= -1f;
 
+            if (Camera.main != null)
+            {
+                var cameraTransform = Camera.main.transform;
+
+                var forward = cameraTransform.forward;
+                forward.y = 0;
+                forward.Normalize();
+
+                var right = cameraTransform.right;
+                right.y = 0;
+                right.Normalize();
+
+                return forward * input.y + right * input.x;
+            }
+
             return new Vector3(input.x, 0, input.y);
+        }
+
+        public Vector2 GetCameraRotationAxis()
+        {
+            var input = _gameInput.Player.Look.ReadValue<Vector2>();
+
+            return input;
         }
 
         public void ClearReactionForAnyButtonPress() => _anyButtonPressListenerDisposable?.Dispose();
@@ -72,9 +94,9 @@ namespace CombatTower.Game.Services
 
             _anyButtonPressListenerDisposable = InputSystem.onAnyButtonPress.Call(_ =>
             {
-               _anyButtonPressListenerDisposable?.Dispose();
+                _anyButtonPressListenerDisposable?.Dispose();
 
-               action?.Invoke(); 
+                action?.Invoke();
             });
         }
 

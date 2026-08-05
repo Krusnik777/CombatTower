@@ -5,6 +5,7 @@ using UI;
 using R3;
 using UnityEngine;
 using CombatTower.Game.Gameplay.Entities.Player;
+using CombatTower.Game.Gameplay;
 
 namespace CombatTower.Game.EntryPoints
 {
@@ -12,6 +13,7 @@ namespace CombatTower.Game.EntryPoints
     {
         [SerializeField] private UISceneRootView m_sceneUIRootPrefab;
         [SerializeField] private PlayerView m_playerView;
+        [SerializeField] private CameraRotation m_cameraRotation;
 
         private Subject<GameplayExitParameters> _onEnd;
 
@@ -55,30 +57,9 @@ namespace CombatTower.Game.EntryPoints
             var player = new Player(m_playerView, sceneContainer);
             sceneContainer.RegisterInstance(player);
 
-            /*var inputService = sceneContainer.Resolve<GameInputService>();
-            m_playerMovement.Bind(inputService);
-            m_playerAnimator.Bind(m_playerMovement);
-
-            _testDisposable = inputService.OnAbilityXPressed.Subscribe(_ =>
-            {
-                if (_playingAttack) return;
-
-                _testDisposable2?.Dispose();
-
-                m_playerMovement.SetActive(false);
-                m_playerMovement.IsControlledByRootMotion = true;
-                m_playerAnimator.PlayAttack();
-                _playingAttack = true;
-
-                _testDisposable2 = Observable.Timer(System.TimeSpan.FromSeconds(2f)).Subscribe(_ =>
-                {
-                    _testDisposable2?.Dispose();
-
-                    m_playerMovement.IsControlledByRootMotion = false;
-                    m_playerMovement.SetActive(true);
-                    _playingAttack = false;
-                });
-            });*/
+            var inputService = sceneContainer.Resolve<GameInputService>();
+            m_cameraRotation.Bind(inputService);
+            sceneContainer.RegisterInstance(m_cameraRotation);
         }
 
         private void SetupUI(DIContainer sceneContainer)
