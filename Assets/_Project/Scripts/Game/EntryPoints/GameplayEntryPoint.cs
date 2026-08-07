@@ -6,16 +6,22 @@ using R3;
 using UnityEngine;
 using CombatTower.Game.Gameplay.Entities.Player;
 using CombatTower.Game.Gameplay;
+using Unity.Cinemachine;
 
 namespace CombatTower.Game.EntryPoints
 {
-    public class GameplayEntryPoint : EntryPoint<GameplayEnterParameters,GameplayExitParameters>
+    public class GameplayEntryPoint : EntryPoint<GameplayEnterParameters, GameplayExitParameters>
     {
         [SerializeField] private UISceneRootView m_sceneUIRootPrefab;
         [SerializeField] private PlayerView m_playerView;
         [SerializeField] private CameraRotation m_cameraRotation;
+        [SerializeField] private CinemachineCamera m_lockOnCamera;
+        [SerializeField] private Transform m_lookTarget;
 
         private Subject<GameplayExitParameters> _onEnd;
+
+        private bool _isLookLocked;
+        private System.IDisposable _testDisposable;
 
         public override Observable<GameplayExitParameters> Run(DIContainer sceneContainer, GameplayEnterParameters enterParameters)
         {
@@ -41,7 +47,7 @@ namespace CombatTower.Game.EntryPoints
 
         private void DisposeOfListeners()
         {
-            
+            _testDisposable?.Dispose();
         }
 
         private void RegisterLocalInstances(DIContainer sceneContainer, GameplayEnterParameters enterParameters)
@@ -60,6 +66,15 @@ namespace CombatTower.Game.EntryPoints
             var inputService = sceneContainer.Resolve<GameInputService>();
             m_cameraRotation.Bind(inputService);
             sceneContainer.RegisterInstance(m_cameraRotation);
+
+            _testDisposable = inputService.OnLockOnPressed.Subscribe(_ =>
+            {
+                _isLookLocked = !_isLookLocked;
+
+                m_playerView.Movement.SetLookTransform(_isLookLocked ? m_lookTarget : null);
+                m_cameraRotation.gameObject.SetActive(!_isLookLocked);
+                m_lockOnCamera.gameObject.SetActive(_isLookLocked);
+            });
         }
 
         private void SetupUI(DIContainer sceneContainer)

@@ -65,6 +65,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 else
                 {
                     var directionToTarget = (_lookTargetTransform.position - transform.position).normalized;
+                    directionToTarget.y = 0;
                     targetRotation = Quaternion.LookRotation(directionToTarget);
                 }
 
@@ -75,17 +76,29 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             {
                 m_characterRigidbody.linearVelocity = Vector3.zero;
 
-                if (_rotationDirectionControl != Vector3.zero)
+                if (_lookTargetTransform == null)
                 {
-                    var targetRotation = Quaternion.LookRotation(_rotationDirectionControl);
+                    if (_rotationDirectionControl != Vector3.zero)
+                    {
+                        var targetRotation = Quaternion.LookRotation(_rotationDirectionControl);
+                        m_characterRigidbody.rotation = Quaternion.Lerp(m_characterRigidbody.rotation, targetRotation, _rotationSpeed * Time.fixedDeltaTime);
+
+                        var angle = Quaternion.Angle(m_characterRigidbody.rotation, targetRotation);
+                        if (angle <= 5)
+                        {
+                            m_characterRigidbody.rotation = targetRotation;
+                            _rotationDirectionControl = Vector3.zero;
+                        }
+                    }
+                }
+                else
+                {
+                    var directionToTarget = (_lookTargetTransform.position - transform.position).normalized;
+                    directionToTarget.y = 0;
+                    var targetRotation = Quaternion.LookRotation(directionToTarget);
                     m_characterRigidbody.rotation = Quaternion.Lerp(m_characterRigidbody.rotation, targetRotation, _rotationSpeed * Time.fixedDeltaTime);
 
-                    var angle = Quaternion.Angle(m_characterRigidbody.rotation, targetRotation);
-                    if (angle <= 5)
-                    {
-                        m_characterRigidbody.rotation = targetRotation;
-                        _rotationDirectionControl = Vector3.zero;
-                    }
+                    if (_rotationDirectionControl != Vector3.zero) _rotationDirectionControl = Vector3.zero;
                 }
             }
         }
