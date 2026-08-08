@@ -16,7 +16,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         public Player(PlayerView view, DIContainer sceneContainer)
         {
             _view = view;
-
+            
             _playerWeaponStateMachine = new(this, sceneContainer);
         }
 

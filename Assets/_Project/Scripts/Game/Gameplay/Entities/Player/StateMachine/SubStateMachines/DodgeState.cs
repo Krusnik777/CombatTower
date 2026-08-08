@@ -20,10 +20,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private DIContainer _sceneContainer;
         private Player _player;
         private GameInputService _gameInputService;
+        private LockOnHandler _lockOnHandler;
 
         private IState _previousState;
-
-        private Vector3 _headingDirection;
 
         private IDisposable _dodgeInputListenerDisposable;
         private IDisposable _dodgeFinishListenerDisposable;
@@ -35,6 +34,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _sceneContainer = sceneContainer;
 
             _gameInputService = _sceneContainer.Resolve<GameInputService>();
+            _lockOnHandler = _sceneContainer.Resolve<LockOnHandler>();
         }
 
         public virtual void Enter(IState previousState)
@@ -47,29 +47,25 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             {
                 DisposeOfListeners();
 
-                var newDirection = _gameInputService.GetMovementInput();
-                _player.Movement.SetRotationDirection(newDirection, 500f);
-
+                SetDirection();
                 _player.Animator.SetTrigger(_rollTrigger);
-                _player.Animator.SetFloat(_forwardMoveFloat, newDirection != Vector3.zero ? 1 : -1f);
 
                 _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(_ => OnDodgeEnd());
             });
             _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(_ => OnDodgeEnd());
 
-            _headingDirection = _gameInputService.GetMovementInput();
-
             _player.Movement.IsControlledByRootMotion = true;
+            _lockOnHandler.IsEnabled = false;
 
-            _player.Movement.SetRotationDirection(_headingDirection, 500f);
+            SetDirection();
             _player.Animator.SetTrigger(_dodgeTrigger);
-            _player.Animator.SetFloat(_forwardMoveFloat, _headingDirection != Vector3.zero ? 1 : -1f);
         }
         public virtual void Exit()
         {
             DisposeOfListeners();
 
             _player.Movement.IsControlledByRootMotion = false;
+            _lockOnHandler.IsEnabled = true;
         }
 
         private void DisposeOfListeners()
@@ -84,6 +80,43 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             if (_previousState is CalmState) _parentStateMachine.SetState<CalmState>();
             if (_previousState is BattleState) _parentStateMachine.SetState<BattleState, bool>(false);
+        }
+
+        private void SetDirection()
+        {
+            var direction = _gameInputService.GetMovementInput();
+
+            if (direction == Vector3.zero)
+            {
+                _player.Animator.SetFloat(_forwardMoveFloat, -1f);
+                _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
+
+                return;
+            }
+
+            if (_lockOnHandler.CurrentEnemy != null)
+            {
+                var localDirection = _player.Rigidbody.transform.InverseTransformDirection(direction);
+
+                if (Mathf.Abs(localDirection.x) < Mathf.Abs(localDirection.z))
+                {
+                    localDirection.Normalize();
+                    _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
+                    _player.Animator.SetFloat(_forwardMoveFloat, localDirection.z);
+                }
+                else
+                {
+                    localDirection.Normalize();
+                    _player.Animator.SetFloat(_sidewardMoveFloat, localDirection.x);
+                    _player.Animator.SetFloat(_forwardMoveFloat, 0);
+                }
+
+                return;
+            }
+
+            _player.Movement.SetRotationDirection(direction, 500f);
+            _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
+            _player.Animator.SetFloat(_forwardMoveFloat, direction != Vector3.zero ? 1 : -1f);
         }
     }
 }

@@ -15,9 +15,6 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 [typeof(DodgeState)] = new DodgeState(this, player, sceneContainer),
                 [typeof(DeathState)] = new DeathState(this, player, sceneContainer)
             };
-
-            SetState<CalmState>(); // TEMP
         }
-    
     }
 }

@@ -17,6 +17,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _sceneContainer = sceneContainer;
 
             _player = player;
+
+            _playerStateMachine = new(_player, _sceneContainer);
         }
 
         public void Enter()
@@ -24,7 +26,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _player.Animator.SetLayerWeight(0, 1f);
 
             _playerStateMachine?.Dispose();
-            _playerStateMachine = new(_player, _sceneContainer);
+            _playerStateMachine.SetState<CalmState>(); // TEMP
         }
 
         public void Exit()

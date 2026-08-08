@@ -3,6 +3,7 @@ using DI;
 using R3;
 using CombatTower.Game.Services;
 using System;
+using UnityEngine;
 
 namespace CombatTower.Game.Gameplay.Entities.Player
 {
@@ -10,14 +11,19 @@ namespace CombatTower.Game.Gameplay.Entities.Player
     {
         private const string _attackComboStartTrigger = "AttackComboStart";
         private const string _attackComboInt = "AttackCombo";
+        
         private const int _maxCombo = 5;
         private const float _comboWindowMs = 200f;
         private const float _rotationSpeedInCombo = 10f; // temp
+        private const float _closedTargetDetectionRange = 3f;
 
         private IStateMachine _parentStateMachine;
         private DIContainer _sceneContainer;
         private Player _player;
         private GameInputService _gameInputService;
+        private LockOnHandler _lockOnHandler;
+
+        private IEnemyDetector _enemyDetector;
 
         private int _currentCombo;
         private bool _isChainable;
@@ -32,6 +38,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _player = player;
             _sceneContainer = sceneContainer;
             _gameInputService = _sceneContainer.Resolve<GameInputService>();
+            _lockOnHandler = _sceneContainer.Resolve<LockOnHandler>();
+            
+            _enemyDetector = new EnemyDetector(1 << UnityEngine.LayerMask.NameToLayer("Enemy"), _player.Rigidbody.transform, _closedTargetDetectionRange);
         }
 
         public void Enter()
@@ -58,7 +67,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _currentCombo = 1;
 
             _player.Movement.IsControlledByRootMotion = true;
-            _player.Movement.SetRotationDirection(UnityEngine.Vector3.zero);
+            _player.Movement.SetRotationDirection(GetDirection(Vector3.zero));
             _player.Animator.SetInteger(_attackComboInt, _currentCombo);
             _player.Animator.SetTrigger(_attackComboStartTrigger);
         }
@@ -102,7 +111,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 StopListenToCombo();
                 _currentCombo++;
 
-                _player.Movement.SetRotationDirection(_gameInputService.GetMovementInput(), _rotationSpeedInCombo);
+                _player.Movement.SetRotationDirection(GetDirection(_gameInputService.GetMovementInput()), _rotationSpeedInCombo);
                 //_player.Animator.SetTrigger(_attackComboStartTrigger + _currentCombo.ToString());
                 _player.Animator.SetInteger(_attackComboInt, _currentCombo);
             }
@@ -123,6 +132,29 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             _comboWindowListenerDisposable?.Dispose();
             _isChainable = false;
+        }
+
+        private Vector3 GetDirection(Vector3 defaultDirection)
+        {
+            var direction = defaultDirection;
+
+            if (_lockOnHandler.CurrentEnemy == null)
+            {
+                var enemyView = _enemyDetector.TryGetClosestEnemy();
+
+                if (enemyView != null)
+                {
+                    var enemyPosition = enemyView.transform.position;
+                    enemyPosition.y = 0;
+
+                    var playerPosition = _player.Rigidbody.transform.position;
+                    playerPosition.y = 0;
+
+                    direction = (enemyPosition - playerPosition).normalized;
+                }
+            }
+
+            return direction;
         }
     }
 }

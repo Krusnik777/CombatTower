@@ -6,7 +6,6 @@ using R3;
 using UnityEngine;
 using CombatTower.Game.Gameplay.Entities.Player;
 using CombatTower.Game.Gameplay;
-using Unity.Cinemachine;
 
 namespace CombatTower.Game.EntryPoints
 {
@@ -15,13 +14,9 @@ namespace CombatTower.Game.EntryPoints
         [SerializeField] private UISceneRootView m_sceneUIRootPrefab;
         [SerializeField] private PlayerView m_playerView;
         [SerializeField] private CameraRotation m_cameraRotation;
-        [SerializeField] private CinemachineCamera m_lockOnCamera;
-        [SerializeField] private Transform m_lookTarget;
+        [SerializeField] private LockOnCamera m_lockOnCamera;
 
         private Subject<GameplayExitParameters> _onEnd;
-
-        private bool _isLookLocked;
-        private System.IDisposable _testDisposable;
 
         public override Observable<GameplayExitParameters> Run(DIContainer sceneContainer, GameplayEnterParameters enterParameters)
         {
@@ -47,7 +42,7 @@ namespace CombatTower.Game.EntryPoints
 
         private void DisposeOfListeners()
         {
-            _testDisposable?.Dispose();
+            
         }
 
         private void RegisterLocalInstances(DIContainer sceneContainer, GameplayEnterParameters enterParameters)
@@ -60,21 +55,15 @@ namespace CombatTower.Game.EntryPoints
             sceneContainer.RegisterInstance(GameplayTags.NEXT, nextInvoker as IEventInvoker);
             sceneContainer.RegisterInstance(GameplayTags.EXIT, exitInvoker as IEventInvoker);
 
-            var player = new Player(m_playerView, sceneContainer);
-            sceneContainer.RegisterInstance(player);
-
             var inputService = sceneContainer.Resolve<GameInputService>();
             m_cameraRotation.Bind(inputService);
-            sceneContainer.RegisterInstance(m_cameraRotation);
 
-            _testDisposable = inputService.OnLockOnPressed.Subscribe(_ =>
-            {
-                _isLookLocked = !_isLookLocked;
+            var lockOnHandler = new LockOnHandler(m_cameraRotation.transform, m_lockOnCamera, m_playerView.Movement, m_playerView.transform);
+            lockOnHandler.SubcribeToLockOnInput(inputService.OnLockOnPressed);
+            sceneContainer.RegisterInstance(lockOnHandler); 
 
-                m_playerView.Movement.SetLookTransform(_isLookLocked ? m_lookTarget : null);
-                m_cameraRotation.gameObject.SetActive(!_isLookLocked);
-                m_lockOnCamera.gameObject.SetActive(_isLookLocked);
-            });
+            var player = new Player(m_playerView, sceneContainer);
+            sceneContainer.RegisterInstance(player);
         }
 
         private void SetupUI(DIContainer sceneContainer)

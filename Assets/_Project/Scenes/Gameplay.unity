@@ -735,6 +735,7 @@ GameObject:
   - component: {fileID: 989995998}
   - component: {fileID: 989996000}
   - component: {fileID: 989995996}
+  - component: {fileID: 989996001}
   m_Layer: 0
   m_Name: LockOnCamera
   m_TagString: Untagged
@@ -860,6 +861,23 @@ MonoBehaviour:
     Time: 0.242
     Smoothing: 0
     IgnoreY: 0
+--- !u!114 &989996001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989995995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e617d8220b95114a8c20843be9489e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.LockOnCamera
+  m_camera: {fileID: 989995998}
+  m_closestRangeToLookTarget: 4
+  m_lookTargetPositionChangeSpeed: 10
+  m_lookTargetMaxYPosition: 3
+  m_lookTargetMinYPosition: 1
 --- !u!1 &1043450297
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,7 +887,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1043450298}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LookTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1238,7 +1256,8 @@ GameObject:
   - component: {fileID: 1586286589}
   - component: {fileID: 1586286588}
   - component: {fileID: 1586286587}
-  m_Layer: 0
+  - component: {fileID: 1586286591}
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1339,6 +1358,19 @@ Transform:
   - {fileID: 1043450298}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1586286591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586286586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ddb4bef1f9859f418a3414bbf887633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Enemy.EnemyView
+  <LookTarget>k__BackingField: {fileID: 1043450298}
 --- !u!1 &1911971336
 GameObject:
   m_ObjectHideFlags: 0
@@ -1724,8 +1756,7 @@ MonoBehaviour:
   m_sceneUIRootPrefab: {fileID: 4109014006076167516, guid: 39bf2a5abfe528147a78025542a77ca8, type: 3}
   m_playerView: {fileID: 1371145737}
   m_cameraRotation: {fileID: 438332276}
-  m_lockOnCamera: {fileID: 989995998}
-  m_lookTarget: {fileID: 1043450298}
+  m_lockOnCamera: {fileID: 989996001}
 --- !u!4 &2117270561
 Transform:
   m_ObjectHideFlags: 0
