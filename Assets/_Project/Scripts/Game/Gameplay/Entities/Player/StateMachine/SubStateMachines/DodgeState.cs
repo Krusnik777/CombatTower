@@ -114,7 +114,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 return;
             }
 
-            _player.Movement.SetRotationDirection(direction, 500f);
+            _player.Movement.SetRotationDirection(direction, 5f);
             _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
             _player.Animator.SetFloat(_forwardMoveFloat, direction != Vector3.zero ? 1 : -1f);
         }

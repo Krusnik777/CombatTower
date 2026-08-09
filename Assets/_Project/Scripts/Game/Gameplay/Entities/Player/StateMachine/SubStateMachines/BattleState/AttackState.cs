@@ -14,7 +14,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         
         private const int _maxCombo = 5;
         private const float _comboWindowMs = 200f;
-        private const float _rotationSpeedInCombo = 10f; // temp
+        private const float _rotationSpeedInCombo = 5f; // temp
         private const float _closedTargetDetectionRange = 3f;
 
         private IStateMachine _parentStateMachine;

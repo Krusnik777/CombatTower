@@ -8,13 +8,12 @@ namespace CombatTower.Game.Services
 {
     public class GameInputService : IDisposable
     {
-        public Subject<Unit> OnAbilityAPressed { get; private set; } = new();
-        public Subject<Unit> OnAbilityBPressed { get; private set; } = new();
         public Subject<Unit> OnAttackPressed { get; private set; } = new();
-        public Subject<Unit> OnAbilityYPressed { get; private set; } = new();
 
         public Subject<Unit> OnDodgePressed { get; private set; } = new();
         public Subject<Unit> OnLockOnPressed { get; private set; } = new();
+
+        public Subject<int> OnLockOnTargetSwitchPressed { get; private set; } = new();
 
         private GameInput _gameInput;
         public InputActionAsset ActionsAsset => _gameInput.asset;
@@ -34,11 +33,9 @@ namespace CombatTower.Game.Services
             _gameInput.Player.Attack.performed += OnAttack;
             _gameInput.Player.Dodge.performed += OnDodge;
 
-            _gameInput.Player.AbilityA.performed += OnAbilityA;
-            _gameInput.Player.AbilityB.performed += OnAbilityB;
-            _gameInput.Player.AbilityY.performed += OnAbilityY;
-
             _gameInput.Player.LockOn.performed += OnLockOn;
+            _gameInput.Player.SwitchLockOnTargetToLeft.performed += OnSwitchTargetToLeft;
+            _gameInput.Player.SwitchLockOnTargetToRight.performed += OnSwitchTargetToRight;
         }
 
         public void Dispose()
@@ -49,11 +46,9 @@ namespace CombatTower.Game.Services
             _gameInput.Player.Attack.performed -= OnAttack;
             _gameInput.Player.Dodge.performed -= OnDodge;
 
-            _gameInput.Player.AbilityA.performed -= OnAbilityA;
-            _gameInput.Player.AbilityB.performed -= OnAbilityB;
-            _gameInput.Player.AbilityY.performed -= OnAbilityY;
-
             _gameInput.Player.LockOn.performed -= OnLockOn;
+            _gameInput.Player.SwitchLockOnTargetToLeft.performed -= OnSwitchTargetToLeft;
+            _gameInput.Player.SwitchLockOnTargetToRight.performed -= OnSwitchTargetToRight;
         }
 
         public Vector3 GetMovementInput(bool isInverse = false)
@@ -110,24 +105,13 @@ namespace CombatTower.Game.Services
             OnDodgePressed?.OnNext(Unit.Default);
         }
 
-        private void OnAbilityA(InputAction.CallbackContext context)
-        {
-            OnAbilityAPressed?.OnNext(Unit.Default);
-        }
-
-        private void OnAbilityB(InputAction.CallbackContext context)
-        {
-            OnAbilityBPressed?.OnNext(Unit.Default);
-        }
-
-        private void OnAbilityY(InputAction.CallbackContext context)
-        {
-            OnAbilityYPressed?.OnNext(Unit.Default);
-        }
-
         private void OnLockOn(InputAction.CallbackContext context)
         {
             OnLockOnPressed?.OnNext(Unit.Default);
         }
+
+        private void OnSwitchTargetToLeft(InputAction.CallbackContext context) => OnSwitchTarget(-1);
+        private void OnSwitchTargetToRight(InputAction.CallbackContext context) => OnSwitchTarget(1);
+        private void OnSwitchTarget(int direction) => OnLockOnTargetSwitchPressed?.OnNext(direction);
     }
 }

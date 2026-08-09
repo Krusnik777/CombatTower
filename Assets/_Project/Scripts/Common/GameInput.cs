@@ -113,36 +113,9 @@ namespace CombatTower
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""AbilityA"",
-                    ""type"": ""Button"",
-                    ""id"": ""f1ba0d36-48eb-4cd5-b651-1c94a6531f70"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""AbilityB"",
-                    ""type"": ""Button"",
-                    ""id"": ""27c5f898-bc57-4ee1-8800-db469aca5fe3"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""6c2ab1b8-8984-453a-af3d-a3c78ae1679a"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""AbilityY"",
-                    ""type"": ""Button"",
-                    ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -161,6 +134,24 @@ namespace CombatTower
                     ""name"": ""Dodge"",
                     ""type"": ""Button"",
                     ""id"": ""24a5a649-7485-4918-bfcb-bf458f92cee8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchLockOnTargetToLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""068b12e9-7654-44b3-93ba-d92b559ca6a1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchLockOnTargetToRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""9cb0caa0-7901-4a80-8a5b-f974e7cd43c2"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -357,74 +348,8 @@ namespace CombatTower
                 },
                 {
                     ""name"": """",
-                    ""id"": ""eb40bb66-4559-4dfa-9a2f-820438abb426"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""AbilityA"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""daba33a1-ad0c-4742-a909-43ad1cdfbeb6"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""AbilityA"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f8a27618-b387-4704-a29d-fee970b5526f"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""AbilityY"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b3f66d0b-7751-423f-908b-a11c5bd95930"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""AbilityY"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f62150c8-66a0-4150-8d73-222567774ba0"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""AbilityB"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4f4649ac-64a8-4a73-af11-b3faef356a4d"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""AbilityB"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""6827d627-50b9-41a0-ae91-f6fe2cdb35e6"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -462,6 +387,50 @@ namespace CombatTower
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0aa94f85-bc53-451b-b5d8-232b163a5cd5"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLockOnTargetToLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3056498c-30ea-4e5b-9cf4-f121fa0b17e0"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLockOnTargetToLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7c52cf46-5dbf-423b-a31a-526c1e66547a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLockOnTargetToRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f8c3917-76e0-4d55-96f2-ecca38a4c300"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLockOnTargetToRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1099,12 +1068,11 @@ namespace CombatTower
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-            m_Player_AbilityA = m_Player.FindAction("AbilityA", throwIfNotFound: true);
-            m_Player_AbilityB = m_Player.FindAction("AbilityB", throwIfNotFound: true);
             m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
-            m_Player_AbilityY = m_Player.FindAction("AbilityY", throwIfNotFound: true);
             m_Player_LockOn = m_Player.FindAction("LockOn", throwIfNotFound: true);
             m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
+            m_Player_SwitchLockOnTargetToLeft = m_Player.FindAction("SwitchLockOnTargetToLeft", throwIfNotFound: true);
+            m_Player_SwitchLockOnTargetToRight = m_Player.FindAction("SwitchLockOnTargetToRight", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1205,12 +1173,11 @@ namespace CombatTower
         private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Look;
-        private readonly InputAction m_Player_AbilityA;
-        private readonly InputAction m_Player_AbilityB;
         private readonly InputAction m_Player_Attack;
-        private readonly InputAction m_Player_AbilityY;
         private readonly InputAction m_Player_LockOn;
         private readonly InputAction m_Player_Dodge;
+        private readonly InputAction m_Player_SwitchLockOnTargetToLeft;
+        private readonly InputAction m_Player_SwitchLockOnTargetToRight;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1231,21 +1198,9 @@ namespace CombatTower
             /// </summary>
             public InputAction @Look => m_Wrapper.m_Player_Look;
             /// <summary>
-            /// Provides access to the underlying input action "Player/AbilityA".
-            /// </summary>
-            public InputAction @AbilityA => m_Wrapper.m_Player_AbilityA;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/AbilityB".
-            /// </summary>
-            public InputAction @AbilityB => m_Wrapper.m_Player_AbilityB;
-            /// <summary>
             /// Provides access to the underlying input action "Player/Attack".
             /// </summary>
             public InputAction @Attack => m_Wrapper.m_Player_Attack;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/AbilityY".
-            /// </summary>
-            public InputAction @AbilityY => m_Wrapper.m_Player_AbilityY;
             /// <summary>
             /// Provides access to the underlying input action "Player/LockOn".
             /// </summary>
@@ -1254,6 +1209,14 @@ namespace CombatTower
             /// Provides access to the underlying input action "Player/Dodge".
             /// </summary>
             public InputAction @Dodge => m_Wrapper.m_Player_Dodge;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/SwitchLockOnTargetToLeft".
+            /// </summary>
+            public InputAction @SwitchLockOnTargetToLeft => m_Wrapper.m_Player_SwitchLockOnTargetToLeft;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/SwitchLockOnTargetToRight".
+            /// </summary>
+            public InputAction @SwitchLockOnTargetToRight => m_Wrapper.m_Player_SwitchLockOnTargetToRight;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1286,24 +1249,21 @@ namespace CombatTower
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
-                @AbilityA.started += instance.OnAbilityA;
-                @AbilityA.performed += instance.OnAbilityA;
-                @AbilityA.canceled += instance.OnAbilityA;
-                @AbilityB.started += instance.OnAbilityB;
-                @AbilityB.performed += instance.OnAbilityB;
-                @AbilityB.canceled += instance.OnAbilityB;
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
-                @AbilityY.started += instance.OnAbilityY;
-                @AbilityY.performed += instance.OnAbilityY;
-                @AbilityY.canceled += instance.OnAbilityY;
                 @LockOn.started += instance.OnLockOn;
                 @LockOn.performed += instance.OnLockOn;
                 @LockOn.canceled += instance.OnLockOn;
                 @Dodge.started += instance.OnDodge;
                 @Dodge.performed += instance.OnDodge;
                 @Dodge.canceled += instance.OnDodge;
+                @SwitchLockOnTargetToLeft.started += instance.OnSwitchLockOnTargetToLeft;
+                @SwitchLockOnTargetToLeft.performed += instance.OnSwitchLockOnTargetToLeft;
+                @SwitchLockOnTargetToLeft.canceled += instance.OnSwitchLockOnTargetToLeft;
+                @SwitchLockOnTargetToRight.started += instance.OnSwitchLockOnTargetToRight;
+                @SwitchLockOnTargetToRight.performed += instance.OnSwitchLockOnTargetToRight;
+                @SwitchLockOnTargetToRight.canceled += instance.OnSwitchLockOnTargetToRight;
             }
 
             /// <summary>
@@ -1321,24 +1281,21 @@ namespace CombatTower
                 @Look.started -= instance.OnLook;
                 @Look.performed -= instance.OnLook;
                 @Look.canceled -= instance.OnLook;
-                @AbilityA.started -= instance.OnAbilityA;
-                @AbilityA.performed -= instance.OnAbilityA;
-                @AbilityA.canceled -= instance.OnAbilityA;
-                @AbilityB.started -= instance.OnAbilityB;
-                @AbilityB.performed -= instance.OnAbilityB;
-                @AbilityB.canceled -= instance.OnAbilityB;
                 @Attack.started -= instance.OnAttack;
                 @Attack.performed -= instance.OnAttack;
                 @Attack.canceled -= instance.OnAttack;
-                @AbilityY.started -= instance.OnAbilityY;
-                @AbilityY.performed -= instance.OnAbilityY;
-                @AbilityY.canceled -= instance.OnAbilityY;
                 @LockOn.started -= instance.OnLockOn;
                 @LockOn.performed -= instance.OnLockOn;
                 @LockOn.canceled -= instance.OnLockOn;
                 @Dodge.started -= instance.OnDodge;
                 @Dodge.performed -= instance.OnDodge;
                 @Dodge.canceled -= instance.OnDodge;
+                @SwitchLockOnTargetToLeft.started -= instance.OnSwitchLockOnTargetToLeft;
+                @SwitchLockOnTargetToLeft.performed -= instance.OnSwitchLockOnTargetToLeft;
+                @SwitchLockOnTargetToLeft.canceled -= instance.OnSwitchLockOnTargetToLeft;
+                @SwitchLockOnTargetToRight.started -= instance.OnSwitchLockOnTargetToRight;
+                @SwitchLockOnTargetToRight.performed -= instance.OnSwitchLockOnTargetToRight;
+                @SwitchLockOnTargetToRight.canceled -= instance.OnSwitchLockOnTargetToRight;
             }
 
             /// <summary>
@@ -1761,33 +1718,12 @@ namespace CombatTower
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnLook(InputAction.CallbackContext context);
             /// <summary>
-            /// Method invoked when associated input action "AbilityA" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnAbilityA(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "AbilityB" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnAbilityB(InputAction.CallbackContext context);
-            /// <summary>
             /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnAttack(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "AbilityY" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnAbilityY(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "LockOn" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
@@ -1802,6 +1738,20 @@ namespace CombatTower
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnDodge(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "SwitchLockOnTargetToLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnSwitchLockOnTargetToLeft(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "SwitchLockOnTargetToRight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnSwitchLockOnTargetToRight(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

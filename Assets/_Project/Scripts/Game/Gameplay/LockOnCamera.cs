@@ -24,6 +24,7 @@ namespace CombatTower.Game.Gameplay
             }
 
             _lookTarget = lookTarget;
+            m_camera.Target.LookAtTarget = _lookTarget;
         }
 
         private void Start()
