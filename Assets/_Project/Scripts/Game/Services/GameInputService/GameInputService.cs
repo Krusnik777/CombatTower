@@ -15,6 +15,9 @@ namespace CombatTower.Game.Services
 
         public Subject<int> OnLockOnTargetSwitchPressed { get; private set; } = new();
 
+        public ReadOnlyReactiveProperty<bool> Guard => _guard;
+        private ReactiveProperty<bool> _guard;
+
         private GameInput _gameInput;
         public InputActionAsset ActionsAsset => _gameInput.asset;
 
@@ -28,10 +31,15 @@ namespace CombatTower.Game.Services
             _gameInput = new();
             _gameInput.Enable();
 
+            _guard = new(false);
+
             _uiInputController = new(_gameInput);
 
             _gameInput.Player.Attack.performed += OnAttack;
             _gameInput.Player.Dodge.performed += OnDodge;
+
+            _gameInput.Player.Guard.started += OnGuardStart;
+            _gameInput.Player.Guard.canceled += OnGuardEnd;
 
             _gameInput.Player.LockOn.performed += OnLockOn;
             _gameInput.Player.SwitchLockOnTargetToLeft.performed += OnSwitchTargetToLeft;
@@ -103,6 +111,16 @@ namespace CombatTower.Game.Services
         private void OnDodge(InputAction.CallbackContext context)
         {
             OnDodgePressed?.OnNext(Unit.Default);
+        }
+
+        private void OnGuardStart(InputAction.CallbackContext context)
+        {
+            _guard.Value = true;
+        }
+
+        private void OnGuardEnd(InputAction.CallbackContext context)
+        {
+            _guard.Value = false;
         }
 
         private void OnLockOn(InputAction.CallbackContext context)

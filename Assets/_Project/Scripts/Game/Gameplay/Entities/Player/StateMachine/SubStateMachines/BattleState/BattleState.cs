@@ -9,7 +9,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         public enum ExitTag
         {
             Timer,
-            Dodge
+            Dodge,
+            Guard
         }
 
         protected const string _battleStateBool = "IsBattleState";
@@ -42,6 +43,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 {
                     case ExitTag.Timer : _parentStateMachine.SetState<CalmState>(); return;
                     case ExitTag.Dodge : _parentStateMachine.SetState<DodgeState, IState>(this); return;
+                    case ExitTag.Guard : _parentStateMachine.SetState<GuardState>(); return;
 
                     default : throw new System.ArgumentOutOfRangeException($"Unsupported exit tag: {exitTag}");
                 }

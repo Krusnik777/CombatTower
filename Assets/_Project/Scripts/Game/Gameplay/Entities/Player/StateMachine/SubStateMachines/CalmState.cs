@@ -9,6 +9,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
     {
         private IDisposable _attackListenerDisposable;
         private IDisposable _dodgeListenerDisposable;
+        private IDisposable _guardListenerDisposable;
 
         public CalmState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer) : base(parentStateMachine, player, sceneContainer) { }
 
@@ -20,6 +21,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(_ => OnAttack());
             _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ => OnDodge());
+            _guardListenerDisposable = _gameInputService.Guard.Where(v => v == true).Subscribe(_ => OnGuard());
         }
 
         public override void Exit()
@@ -33,6 +35,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             _attackListenerDisposable?.Dispose();
             _dodgeListenerDisposable?.Dispose();
+            _guardListenerDisposable?.Dispose();
         }
 
         private void OnAttack()
@@ -47,6 +50,13 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             DisposeOfListeners();
 
             _parentStateMachine.SetState<DodgeState, IState>(this);
+        }
+
+        private void OnGuard()
+        {
+            DisposeOfListeners();
+
+            _parentStateMachine.SetState<GuardState>();
         }
     }
 }

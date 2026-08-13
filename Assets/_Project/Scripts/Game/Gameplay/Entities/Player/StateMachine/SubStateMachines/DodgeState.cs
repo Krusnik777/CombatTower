@@ -23,9 +23,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private LockOnHandler _lockOnHandler;
 
         private IState _previousState;
+        private bool _guardHolded;
 
         private IDisposable _dodgeInputListenerDisposable;
         private IDisposable _dodgeFinishListenerDisposable;
+        private IDisposable _guardListenerDisposable;
 
         public DodgeState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer)
         {
@@ -42,6 +44,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             DisposeOfListeners();
 
             _previousState = previousState;
+            _guardHolded = false;
 
             _dodgeInputListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ =>
             {
@@ -53,6 +56,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(_ => OnDodgeEnd());
             });
             _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(_ => OnDodgeEnd());
+
+            _guardListenerDisposable = _gameInputService.Guard.Subscribe(value => _guardHolded = value);
 
             _player.Movement.IsControlledByRootMotion = true;
             _lockOnHandler.IsEnabled = false;
@@ -72,11 +77,19 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             _dodgeInputListenerDisposable?.Dispose();
             _dodgeFinishListenerDisposable?.Dispose();
+            _guardListenerDisposable?.Dispose();
         }
 
         private void OnDodgeEnd()
         {
             DisposeOfListeners();
+
+            if (_guardHolded)
+            {
+                _parentStateMachine.SetState<GuardState>();
+
+                return;
+            }
 
             if (_previousState is CalmState) _parentStateMachine.SetState<CalmState>();
             if (_previousState is BattleState) _parentStateMachine.SetState<BattleState, bool>(false);

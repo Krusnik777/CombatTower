@@ -8,11 +8,13 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 {
     public class BattleMovementState : MovementState
     {
-        private float _targetTime = 10f;
+        private const float _exitStateTime = 10f; // TO DO - to config
+        
         private float _timer;
 
         private IDisposable _attackListenerDisposable;
         private IDisposable _dodgeListenerDisposable;
+        private IDisposable _guardListenerDisposable;
         private IDisposable _returnToCalmTimerListenerDisposable;
 
         public BattleMovementState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer) : base(parentStateMachine, player, sceneContainer) { }
@@ -27,6 +29,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(_ => OnAttack());
             _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ => OnDodge());
+            _guardListenerDisposable = _gameInputService.Guard.Where(v => v == true).Subscribe(_ => OnGuard());
             _returnToCalmTimerListenerDisposable = Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(_ => UpdateTimer());
         }
 
@@ -41,6 +44,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             _attackListenerDisposable?.Dispose();
             _dodgeListenerDisposable?.Dispose();
+            _guardListenerDisposable?.Dispose();
             _returnToCalmTimerListenerDisposable?.Dispose();
         }
 
@@ -58,12 +62,19 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Dodge);
         }
 
+        private void OnGuard()
+        {
+            DisposeOfListeners();
+
+            _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Guard);
+        }
+
         private void UpdateTimer()
         {
             if (_gameInputService.GetMovementInput() != Vector3.zero) _timer = 0f;
             else _timer++;
 
-            if (_timer >= _targetTime)
+            if (_timer >= _exitStateTime)
             {
                 DisposeOfListeners();
                 

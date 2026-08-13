@@ -156,6 +156,15 @@ namespace CombatTower
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Guard"",
+                    ""type"": ""Button"",
+                    ""id"": ""02a5d076-3c22-49cd-8a70-4f0815b623b6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -370,22 +379,22 @@ namespace CombatTower
                 },
                 {
                     ""name"": """",
-                    ""id"": ""da11d25e-81fd-4272-ae8c-a1f7ecdce3a1"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""id"": ""fb189dd9-0770-433d-9d12-39d08d93c4bd"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""fb189dd9-0770-433d-9d12-39d08d93c4bd"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""da11d25e-81fd-4272-ae8c-a1f7ecdce3a1"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -396,7 +405,7 @@ namespace CombatTower
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""SwitchLockOnTargetToLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -407,7 +416,7 @@ namespace CombatTower
                     ""path"": ""<Gamepad>/rightStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""SwitchLockOnTargetToLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -418,7 +427,7 @@ namespace CombatTower
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""SwitchLockOnTargetToRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -429,8 +438,30 @@ namespace CombatTower
                     ""path"": ""<Gamepad>/rightStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""SwitchLockOnTargetToRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c82ee50-aff6-410c-9e69-ab2ef655f5aa"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Guard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89427596-ed8d-49b5-85af-e69cecba2bbd"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Guard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1073,6 +1104,7 @@ namespace CombatTower
             m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
             m_Player_SwitchLockOnTargetToLeft = m_Player.FindAction("SwitchLockOnTargetToLeft", throwIfNotFound: true);
             m_Player_SwitchLockOnTargetToRight = m_Player.FindAction("SwitchLockOnTargetToRight", throwIfNotFound: true);
+            m_Player_Guard = m_Player.FindAction("Guard", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1178,6 +1210,7 @@ namespace CombatTower
         private readonly InputAction m_Player_Dodge;
         private readonly InputAction m_Player_SwitchLockOnTargetToLeft;
         private readonly InputAction m_Player_SwitchLockOnTargetToRight;
+        private readonly InputAction m_Player_Guard;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1217,6 +1250,10 @@ namespace CombatTower
             /// Provides access to the underlying input action "Player/SwitchLockOnTargetToRight".
             /// </summary>
             public InputAction @SwitchLockOnTargetToRight => m_Wrapper.m_Player_SwitchLockOnTargetToRight;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/Guard".
+            /// </summary>
+            public InputAction @Guard => m_Wrapper.m_Player_Guard;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1264,6 +1301,9 @@ namespace CombatTower
                 @SwitchLockOnTargetToRight.started += instance.OnSwitchLockOnTargetToRight;
                 @SwitchLockOnTargetToRight.performed += instance.OnSwitchLockOnTargetToRight;
                 @SwitchLockOnTargetToRight.canceled += instance.OnSwitchLockOnTargetToRight;
+                @Guard.started += instance.OnGuard;
+                @Guard.performed += instance.OnGuard;
+                @Guard.canceled += instance.OnGuard;
             }
 
             /// <summary>
@@ -1296,6 +1336,9 @@ namespace CombatTower
                 @SwitchLockOnTargetToRight.started -= instance.OnSwitchLockOnTargetToRight;
                 @SwitchLockOnTargetToRight.performed -= instance.OnSwitchLockOnTargetToRight;
                 @SwitchLockOnTargetToRight.canceled -= instance.OnSwitchLockOnTargetToRight;
+                @Guard.started -= instance.OnGuard;
+                @Guard.performed -= instance.OnGuard;
+                @Guard.canceled -= instance.OnGuard;
             }
 
             /// <summary>
@@ -1752,6 +1795,13 @@ namespace CombatTower
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSwitchLockOnTargetToRight(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Guard" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnGuard(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

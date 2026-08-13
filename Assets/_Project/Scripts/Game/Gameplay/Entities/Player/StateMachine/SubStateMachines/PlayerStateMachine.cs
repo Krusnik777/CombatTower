@@ -13,6 +13,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 [typeof(CalmState)] = new CalmState(this, player, sceneContainer),
                 [typeof(BattleState)] = new BattleState(this, player, sceneContainer),
                 [typeof(DodgeState)] = new DodgeState(this, player, sceneContainer),
+                [typeof(GuardState)] = new GuardState(this, player, sceneContainer),
                 [typeof(DeathState)] = new DeathState(this, player, sceneContainer)
             };
         }

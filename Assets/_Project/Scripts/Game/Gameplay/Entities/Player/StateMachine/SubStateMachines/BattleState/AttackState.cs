@@ -30,6 +30,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         private IDisposable _comboWindowListenerDisposable;
         private IDisposable _dodgeListenerDisposable;
+        private IDisposable _guardListenerDisposable;
         private CompositeDisposable _attackEventsListenerDisposables;
 
         public AttackState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer)
@@ -64,6 +65,15 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 return;
             });
 
+            _guardListenerDisposable = _gameInputService.Guard.Where(v => v == true).Subscribe(_ =>
+            {
+                DisposeOfListeners();
+
+                _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Guard);
+
+                return;
+            });
+
             _currentCombo = 1;
 
             _player.Movement.IsControlledByRootMotion = true;
@@ -84,6 +94,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _attackEventsListenerDisposables?.Dispose();
             _comboWindowListenerDisposable?.Dispose();
             _dodgeListenerDisposable?.Dispose();
+            _guardListenerDisposable?.Dispose();
         }
 
         private void OnAttackStarted(int comboNumber)
