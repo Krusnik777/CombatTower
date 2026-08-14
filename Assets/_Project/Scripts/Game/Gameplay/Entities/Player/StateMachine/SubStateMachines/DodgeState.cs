@@ -23,6 +23,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private LockOnHandler _lockOnHandler;
 
         private IState _previousState;
+        private bool _isRoll;
         private bool _guardHolded;
 
         private IDisposable _dodgeInputListenerDisposable;
@@ -44,18 +45,20 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             DisposeOfListeners();
 
             _previousState = previousState;
+            _isRoll = false;
             _guardHolded = false;
 
             _dodgeInputListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ =>
             {
-                DisposeOfListeners();
+                DisposeOfListeners(false);
 
                 SetDirection();
+                _isRoll = true;
                 _player.Animator.SetTrigger(_rollTrigger);
 
-                _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(_ => OnDodgeEnd());
+                _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(OnDodgeEnd);
             });
-            _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(_ => OnDodgeEnd());
+            _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(OnDodgeEnd);
 
             _guardListenerDisposable = _gameInputService.Guard.Subscribe(value => _guardHolded = value);
 
@@ -73,15 +76,17 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _lockOnHandler.IsEnabled = true;
         }
 
-        private void DisposeOfListeners()
+        private void DisposeOfListeners(bool includeGuardListener = true)
         {
             _dodgeInputListenerDisposable?.Dispose();
             _dodgeFinishListenerDisposable?.Dispose();
-            _guardListenerDisposable?.Dispose();
+            if (includeGuardListener) _guardListenerDisposable?.Dispose();
         }
 
-        private void OnDodgeEnd()
+        private void OnDodgeEnd(int dodgeType)
         {
+            if (_isRoll && dodgeType != 1) return;
+
             DisposeOfListeners();
 
             if (_guardHolded)
@@ -101,8 +106,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             if (direction == Vector3.zero)
             {
-                _player.Animator.SetFloat(_forwardMoveFloat, -1f);
                 _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
+                _player.Animator.SetFloat(_forwardMoveFloat, -1f);
 
                 return;
             }
@@ -120,8 +125,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 else
                 {
                     localDirection.Normalize();
-                    _player.Animator.SetFloat(_sidewardMoveFloat, localDirection.x);
                     _player.Animator.SetFloat(_forwardMoveFloat, 0);
+                    _player.Animator.SetFloat(_sidewardMoveFloat, localDirection.x);
                 }
 
                 return;

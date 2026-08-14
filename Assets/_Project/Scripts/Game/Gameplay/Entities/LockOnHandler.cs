@@ -59,12 +59,17 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         private void TrySetTarget(bool byInput = false)
         {
-            if (!IsEnabled) return;
-
-            if (CurrentEnemy == null || !byInput)
+            if (IsEnabled)
             {
-                CurrentEnemy = _enemyDetector.TryGetClosestEnemy();
-                // need to do subcribtion to death
+                if (CurrentEnemy == null || !byInput)
+                {
+                    CurrentEnemy = _enemyDetector.TryGetClosestEnemy();
+                    // need to do subcribtion to death
+                }
+                else
+                {
+                    CurrentEnemy = null;
+                }
             }
             else
             {
