@@ -18,8 +18,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         protected Player _player;
         protected GameInputService _gameInputService;
 
-        protected virtual float _movementSpeed => 250f; // TEMP
-        protected virtual float _rotationSpeed => 5f; // TEMP
+        protected virtual float _movementSpeed => _player.ParametersConfig.MovementSpeed;
+        protected virtual float _rotationSpeed => _player.ParametersConfig.RotationSpeed;
 
         private IDisposable _animatorMovementUpdateDisposable;
 

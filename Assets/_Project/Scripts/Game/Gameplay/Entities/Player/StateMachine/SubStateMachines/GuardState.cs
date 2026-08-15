@@ -10,7 +10,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         protected const string _guardStateBool = "IsGuardState";
         protected const string _hasShieldBool = "HasShield";
 
-        protected override float _movementSpeed => base._movementSpeed / 2f;
+        protected override float _movementSpeed => _player.ParametersConfig.MovementSpeedInGuard;
+        protected override float _rotationSpeed => _player.ParametersConfig.RotationSpeedInGuard;
 
         private IDisposable _guardEndListenerDisposable;
 

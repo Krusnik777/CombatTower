@@ -58,11 +58,13 @@ namespace CombatTower.Game.EntryPoints
             var inputService = sceneContainer.Resolve<GameInputService>();
             m_cameraRotation.Bind(inputService);
 
-            var lockOnHandler = new LockOnHandler(m_cameraRotation.transform, m_lockOnCamera, m_playerView.Movement, m_playerView.transform);
+            var playerConfigsProvider = sceneContainer.Resolve<PlayerConfigsProvider>();
+
+            var lockOnHandler = new LockOnHandler(playerConfigsProvider.ParametersConfig, m_cameraRotation.transform, m_lockOnCamera, m_playerView.Movement, m_playerView.transform);
             lockOnHandler.SubcribeToLockOnInput(inputService.OnLockOnPressed, inputService.OnLockOnTargetSwitchPressed);
             sceneContainer.RegisterInstance(lockOnHandler); 
 
-            var player = new Player(m_playerView, sceneContainer);
+            var player = new Player(playerConfigsProvider.ParametersConfig, m_playerView, sceneContainer);
             sceneContainer.RegisterInstance(player);
         }
 

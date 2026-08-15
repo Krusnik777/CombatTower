@@ -11,11 +11,6 @@ namespace CombatTower.Game.Gameplay.Entities.Player
     {
         private const string _attackComboStartTrigger = "AttackComboStart";
         private const string _attackComboInt = "AttackCombo";
-        
-        private const int _maxCombo = 5;
-        private const float _comboWindowMs = 200f;
-        private const float _rotationSpeedInCombo = 5f; // temp
-        private const float _closedTargetDetectionRange = 3f;
 
         private IStateMachine _parentStateMachine;
         private DIContainer _sceneContainer;
@@ -41,13 +36,13 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _gameInputService = _sceneContainer.Resolve<GameInputService>();
             _lockOnHandler = _sceneContainer.Resolve<LockOnHandler>();
             
-            _enemyDetector = new EnemyDetector(1 << UnityEngine.LayerMask.NameToLayer("Enemy"), _player.Rigidbody.transform, _closedTargetDetectionRange);
+            _enemyDetector = new EnemyDetector(Root.LayerMasks.Enemy, _player.Rigidbody.transform, _player.ParametersConfig.CloseTargetDetectionRange);
         }
 
         public void Enter()
         {
             DisposeOfListeners();
-            
+
             _attackEventsListenerDisposables = new()
             {
                 _player.EventsCollector.OnAttackStart.Subscribe(OnAttackStarted),
@@ -55,24 +50,6 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 _player.EventsCollector.OnAttackFinish.Subscribe(OnAttackFinished),
                 _gameInputService.OnAttackPressed.Subscribe(_ => OnAttackPressed())
             };
-
-            _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ =>
-            {
-                DisposeOfListeners();
-
-                _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Dodge);
-
-                return;
-            });
-
-            _guardListenerDisposable = _gameInputService.Guard.Where(v => v == true).Subscribe(_ =>
-            {
-                DisposeOfListeners();
-
-                _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Guard);
-
-                return;
-            });
 
             _currentCombo = 1;
 
@@ -105,12 +82,14 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private void OnAttackExecuted(int comboNumber)
         {
             StartListenToCombo();
+            StartListenDodgeOrGuard();
         }
 
         private void OnAttackFinished(int comboNumber)
         {
             _attackEventsListenerDisposables?.Dispose();
             StopListenToCombo();
+            StopListenDodgeAndGuard();
 
             _parentStateMachine.SetState<BattleMovementState>();
         }
@@ -120,9 +99,10 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             if (_isChainable)
             {
                 StopListenToCombo();
+                StopListenDodgeAndGuard();
                 _currentCombo++;
 
-                _player.Movement.SetRotationDirection(GetDirection(_gameInputService.GetMovementInput()), _rotationSpeedInCombo);
+                _player.Movement.SetRotationDirection(GetDirection(_gameInputService.GetMovementInput()), _player.ParametersConfig.RotationSpeed);
                 //_player.Animator.SetTrigger(_attackComboStartTrigger + _currentCombo.ToString());
                 _player.Animator.SetInteger(_attackComboInt, _currentCombo);
             }
@@ -132,17 +112,44 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             _comboWindowListenerDisposable?.Dispose();
 
-            if (_currentCombo == _maxCombo) return;
+            if (_currentCombo == _player.ParametersConfig.MaxCombo) return;
 
             _isChainable = true;
 
-            _comboWindowListenerDisposable = Observable.Timer(TimeSpan.FromMilliseconds(_comboWindowMs)).Subscribe(_ => StopListenToCombo());
+            _comboWindowListenerDisposable = Observable.Timer(TimeSpan.FromMilliseconds(_player.ParametersConfig.ComboWindowMs)).Subscribe(_ => StopListenToCombo());
         }
 
         private void StopListenToCombo()
         {
             _comboWindowListenerDisposable?.Dispose();
             _isChainable = false;
+        }
+
+        private void StartListenDodgeOrGuard()
+        {
+            _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ =>
+            {
+                DisposeOfListeners();
+
+                _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Dodge);
+
+                return;
+            });
+
+            _guardListenerDisposable = _gameInputService.Guard.Where(v => v == true).Subscribe(_ =>
+            {
+                DisposeOfListeners();
+
+                _parentStateMachine.SetState<BattleExitState, BattleState.ExitTag>(BattleState.ExitTag.Guard);
+
+                return;
+            });
+        }
+
+        private void StopListenDodgeAndGuard()
+        {
+            _dodgeListenerDisposable?.Dispose();
+            _guardListenerDisposable?.Dispose();
         }
 
         private Vector3 GetDirection(Vector3 defaultDirection)

@@ -14,8 +14,6 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private const string _dodgeTrigger = "Dodge";
         private const string _rollTrigger = "Roll";
 
-        private const float _invulnerabilityWindowMs = 200f;
-
         private IStateMachine _parentStateMachine;
         private DIContainer _sceneContainer;
         private Player _player;
@@ -29,6 +27,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private IDisposable _dodgeInputListenerDisposable;
         private IDisposable _dodgeFinishListenerDisposable;
         private IDisposable _guardListenerDisposable;
+        private IDisposable _guardLinkListenerDisposable;
 
         public DodgeState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer)
         {
@@ -44,6 +43,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             DisposeOfListeners();
 
+            _player.Animator.ResetTrigger(_rollTrigger);
+
             _previousState = previousState;
             _isRoll = false;
             _guardHolded = false;
@@ -57,8 +58,10 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 _player.Animator.SetTrigger(_rollTrigger);
 
                 _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(OnDodgeEnd);
+                _guardLinkListenerDisposable = _player.EventsCollector.OnDodgeToGuardLink.Subscribe(TryLinkToGuard);
             });
             _dodgeFinishListenerDisposable = _player.EventsCollector.OnDodgeEnd.Subscribe(OnDodgeEnd);
+            _guardLinkListenerDisposable = _player.EventsCollector.OnDodgeToGuardLink.Subscribe(TryLinkToGuard);
 
             _guardListenerDisposable = _gameInputService.Guard.Subscribe(value => _guardHolded = value);
 
@@ -68,6 +71,17 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             SetDirection();
             _player.Animator.SetTrigger(_dodgeTrigger);
         }
+
+        private void TryLinkToGuard(int dodgeType)
+        {
+            if (_isRoll && dodgeType != 1) return;
+            if (!_guardHolded) return;
+
+            DisposeOfListeners();
+            
+            _parentStateMachine.SetState<GuardState>();
+        }
+
         public virtual void Exit()
         {
             DisposeOfListeners();
@@ -81,6 +95,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _dodgeInputListenerDisposable?.Dispose();
             _dodgeFinishListenerDisposable?.Dispose();
             if (includeGuardListener) _guardListenerDisposable?.Dispose();
+            _guardLinkListenerDisposable?.Dispose();
         }
 
         private void OnDodgeEnd(int dodgeType)
@@ -132,7 +147,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 return;
             }
 
-            _player.Movement.SetRotationDirection(direction, 5f);
+            _player.Movement.SetRotationDirection(direction, _player.ParametersConfig.RotationSpeed);
             _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
             _player.Animator.SetFloat(_forwardMoveFloat, direction != Vector3.zero ? 1 : -1f);
         }

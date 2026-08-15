@@ -54,6 +54,9 @@ namespace CombatTower.Game.Services
             _gameInput.Player.Attack.performed -= OnAttack;
             _gameInput.Player.Dodge.performed -= OnDodge;
 
+            _gameInput.Player.Guard.started -= OnGuardStart;
+            _gameInput.Player.Guard.canceled -= OnGuardEnd;
+
             _gameInput.Player.LockOn.performed -= OnLockOn;
             _gameInput.Player.SwitchLockOnTargetToLeft.performed -= OnSwitchTargetToLeft;
             _gameInput.Player.SwitchLockOnTargetToRight.performed -= OnSwitchTargetToRight;

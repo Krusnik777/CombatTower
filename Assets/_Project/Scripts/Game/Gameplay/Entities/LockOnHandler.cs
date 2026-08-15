@@ -1,4 +1,5 @@
 using System;
+using CombatTower.Game.Configs;
 using CombatTower.Game.Gameplay.Entities.Enemy;
 using R3;
 using UnityEngine;
@@ -7,12 +8,10 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 {
     public class LockOnHandler : IDisposable
     {
-        private const float _lockOnDetectionRange = 8f; // Temp?
-        private const float _cooldownAfterSwitchTargetMs = 250f;
-
         public bool IsEnabled { get; set; }
         public EnemyView CurrentEnemy { get; private set; }
 
+        private ILockOnParameters _lockOnParameters;
         private Transform _controlledCamera;
         private LockOnCamera _lockOnCamera;
         private PlayerAvatarMovement _playerAvatarMovement;
@@ -27,13 +26,14 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private IDisposable _switchTargetListenerDisposable;
         private IDisposable _switchTargetCooldownListenerDisposable;
 
-        public LockOnHandler(Transform controlledCamera, LockOnCamera lockOnCamera, PlayerAvatarMovement playerAvatarMovement, Transform detectionCenterTransform)
+        public LockOnHandler(ILockOnParameters lockOnParameters, Transform controlledCamera, LockOnCamera lockOnCamera, PlayerAvatarMovement playerAvatarMovement, Transform detectionCenterTransform)
         {
+            _lockOnParameters = lockOnParameters;
             _controlledCamera = controlledCamera;
             _lockOnCamera = lockOnCamera;
             _playerAvatarMovement = playerAvatarMovement;
 
-            _enemyDetector = new EnemyDetector(1 << LayerMask.NameToLayer("Enemy"), detectionCenterTransform, _lockOnDetectionRange);
+            _enemyDetector = new EnemyDetector(Root.LayerMasks.Enemy, detectionCenterTransform, _lockOnParameters.LockOnDetectionRange);
 
             IsEnabled = true;
             _inCooldown = false;
@@ -118,7 +118,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             _inCooldown = true;
 
-            _switchTargetCooldownListenerDisposable = Observable.Timer(TimeSpan.FromMilliseconds(_cooldownAfterSwitchTargetMs)).Subscribe(_ => SetCooldownAsFinished());
+            _switchTargetCooldownListenerDisposable = Observable.Timer(TimeSpan.FromMilliseconds(_lockOnParameters.CooldownAfterLockOnSwitchTargetMs)).Subscribe(_ => SetCooldownAsFinished());
         }
 
         private void SetCooldownAsFinished()

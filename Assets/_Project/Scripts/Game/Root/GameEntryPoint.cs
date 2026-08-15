@@ -130,8 +130,11 @@ namespace CombatTower.Game.Root
 
         private void SetupProviders()
         {
-            /*var playerAvatarConfigProvider = new PlayerConfigsProvider();
-            _rootContainer.RegisterInstance(playerAvatarConfigProvider);*/
+            var playerConfigProvider = new PlayerConfigsProvider();
+            _rootContainer.RegisterInstance(playerConfigProvider);
+
+            var interactiveMasksLoader = new InteractiveLayerMasksLoader();
+            interactiveMasksLoader.LoadMasksAndAssignToLayerMasks();
         }
 
         #endregion

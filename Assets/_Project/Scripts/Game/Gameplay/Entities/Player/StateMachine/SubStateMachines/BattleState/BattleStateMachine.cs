@@ -18,7 +18,6 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             {
                 [typeof(BattleMovementState)] = new BattleMovementState(this, player, sceneContainer),
                 [typeof(AttackState)] = new AttackState(this, player, sceneContainer),
-                [typeof(DefenseState)] = new DefenseState(this, player, sceneContainer),
                 [typeof(BattleExitState)] = exitState
             };
 

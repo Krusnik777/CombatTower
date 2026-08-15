@@ -7,9 +7,7 @@ using UnityEngine;
 namespace CombatTower.Game.Gameplay.Entities.Player
 {
     public class BattleMovementState : MovementState
-    {
-        private const float _exitStateTime = 10f; // TO DO - to config
-        
+    {       
         private float _timer;
 
         private IDisposable _attackListenerDisposable;
@@ -74,7 +72,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             if (_gameInputService.GetMovementInput() != Vector3.zero) _timer = 0f;
             else _timer++;
 
-            if (_timer >= _exitStateTime)
+            if (_timer >= _player.ParametersConfig.BattleStateExitTime)
             {
                 DisposeOfListeners();
                 
