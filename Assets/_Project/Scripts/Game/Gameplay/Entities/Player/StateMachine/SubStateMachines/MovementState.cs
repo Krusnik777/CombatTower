@@ -44,6 +44,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         public virtual void Exit()
         {
             _player.Movement.Bind(null);
+            _player.Animator.SetFloat(_forwardMoveFloat, 0f);
+            _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
+
             _animatorMovementUpdateDisposable?.Dispose();
         }
 

@@ -165,6 +165,15 @@ namespace CombatTower
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TestButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""cfc05afc-de78-4ed5-adc7-e6c15973e28b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -462,6 +471,17 @@ namespace CombatTower
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Guard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5595a66c-e0bf-4156-941f-c8902ceadd89"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TestButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1105,6 +1125,7 @@ namespace CombatTower
             m_Player_SwitchLockOnTargetToLeft = m_Player.FindAction("SwitchLockOnTargetToLeft", throwIfNotFound: true);
             m_Player_SwitchLockOnTargetToRight = m_Player.FindAction("SwitchLockOnTargetToRight", throwIfNotFound: true);
             m_Player_Guard = m_Player.FindAction("Guard", throwIfNotFound: true);
+            m_Player_TestButton = m_Player.FindAction("TestButton", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1211,6 +1232,7 @@ namespace CombatTower
         private readonly InputAction m_Player_SwitchLockOnTargetToLeft;
         private readonly InputAction m_Player_SwitchLockOnTargetToRight;
         private readonly InputAction m_Player_Guard;
+        private readonly InputAction m_Player_TestButton;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1254,6 +1276,10 @@ namespace CombatTower
             /// Provides access to the underlying input action "Player/Guard".
             /// </summary>
             public InputAction @Guard => m_Wrapper.m_Player_Guard;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/TestButton".
+            /// </summary>
+            public InputAction @TestButton => m_Wrapper.m_Player_TestButton;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1304,6 +1330,9 @@ namespace CombatTower
                 @Guard.started += instance.OnGuard;
                 @Guard.performed += instance.OnGuard;
                 @Guard.canceled += instance.OnGuard;
+                @TestButton.started += instance.OnTestButton;
+                @TestButton.performed += instance.OnTestButton;
+                @TestButton.canceled += instance.OnTestButton;
             }
 
             /// <summary>
@@ -1339,6 +1368,9 @@ namespace CombatTower
                 @Guard.started -= instance.OnGuard;
                 @Guard.performed -= instance.OnGuard;
                 @Guard.canceled -= instance.OnGuard;
+                @TestButton.started -= instance.OnTestButton;
+                @TestButton.performed -= instance.OnTestButton;
+                @TestButton.canceled -= instance.OnTestButton;
             }
 
             /// <summary>
@@ -1802,6 +1834,13 @@ namespace CombatTower
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnGuard(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "TestButton" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnTestButton(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

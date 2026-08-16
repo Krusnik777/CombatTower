@@ -14,6 +14,8 @@ namespace CombatTower.Game.Gameplay.Entities
         public Subject<int> OnDodgeEnd { get; private set; } = new();
         public Subject<int> OnDodgeToGuardLink { get; private set; } = new();
 
+        public Subject<Unit> OnRecoveryAfterHit { get; private set; } = new();
+
         public Subject<Unit> OnEquipWeapon { get; private set; } = new();
         public Subject<Unit> OnDisarmWeapon { get; private set; } = new();
 
@@ -55,6 +57,11 @@ namespace CombatTower.Game.Gameplay.Entities
         public void OnDodgeToGuardLinkWindow(int dodgeType)
         {
             OnDodgeToGuardLink?.OnNext(dodgeType);
+        }
+
+        public void OnHitRecovery()
+        {
+            OnRecoveryAfterHit?.OnNext(Unit.Default);
         }
     }
 }

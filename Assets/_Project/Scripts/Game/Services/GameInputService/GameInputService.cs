@@ -8,6 +8,8 @@ namespace CombatTower.Game.Services
 {
     public class GameInputService : IDisposable
     {
+        public Subject<Unit> OnTestButtonPressed { get; private set; } = new();
+        
         public Subject<Unit> OnAttackPressed { get; private set; } = new();
 
         public Subject<Unit> OnDodgePressed { get; private set; } = new();
@@ -35,6 +37,8 @@ namespace CombatTower.Game.Services
 
             _uiInputController = new(_gameInput);
 
+            _gameInput.Player.TestButton.performed += OnTestButton;
+
             _gameInput.Player.Attack.performed += OnAttack;
             _gameInput.Player.Dodge.performed += OnDodge;
 
@@ -50,6 +54,8 @@ namespace CombatTower.Game.Services
         {
             _anyButtonPressListenerDisposable?.Dispose();
             _uiInputController?.Dispose();
+
+            _gameInput.Player.TestButton.performed -= OnTestButton;
 
             _gameInput.Player.Attack.performed -= OnAttack;
             _gameInput.Player.Dodge.performed -= OnDodge;
@@ -104,6 +110,11 @@ namespace CombatTower.Game.Services
 
                 action?.Invoke();
             });
+        }
+
+        private void OnTestButton(InputAction.CallbackContext context)
+        {
+            OnTestButtonPressed?.OnNext(Unit.Default);
         }
 
         private void OnAttack(InputAction.CallbackContext context)
