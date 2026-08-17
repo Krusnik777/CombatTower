@@ -27,9 +27,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             var gameInputService = sceneContainer.Resolve<GameInputService>();
             _damageTestDisposable = gameInputService.OnTestButtonPressed?.Subscribe(_ =>
             {
-                if (_currentState != null && _currentState is DamageState) return;
+                /*if (_currentState != null && _currentState is DeathState) return;
 
-                SetState<DamageState>();
+                SetState<DeathState>();*/
             });  
         }
 

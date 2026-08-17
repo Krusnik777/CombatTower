@@ -16,10 +16,20 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private Vector3 _directionControl;
         private Vector3 _rotationDirectionControl;
         private Transform _lookTargetTransform;
+        private bool _forceRotationDirection;
 
         private bool _isActive = true;
 
-        public Vector3 GetLocalLookDirection() => m_characterRigidbody.transform.InverseTransformDirection(_directionControl);
+        public Vector3 GetLocalLookDirection(Vector3 customDirection = new Vector3()) => m_characterRigidbody.transform.InverseTransformDirection(customDirection == Vector3.zero ? _directionControl : customDirection);
+        public float GetDeltaAngleBetweenDirectionAndLookTarget(Vector3 direction)
+        {
+            if (_lookTargetTransform == null) return 0f;
+
+            var directionToTarget = (_lookTargetTransform.position - transform.position).normalized;
+            directionToTarget.y = 0;
+
+            return Vector3.SignedAngle(directionToTarget, direction, Vector3.up);
+        }
 
         public void Bind(GameInputService gameInputService, float movementSpeed = 1f, float rotationSpeed = 1f)
         {
@@ -28,10 +38,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _rotationSpeed = rotationSpeed;
         }
 
-        public void SetRotationDirection(Vector3 direction, float rotationSpeed = 1f)
+        public void SetRotationDirection(Vector3 direction, float rotationSpeed = 1f, bool forceDirection = false)
         {
             _rotationDirectionControl = direction;
             _rotationSpeed = rotationSpeed;
+            _forceRotationDirection = forceDirection;
         }
 
         public void SetActive(bool state) => _isActive = state;
@@ -75,7 +86,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             {
                 m_characterRigidbody.linearVelocity = Vector3.zero;
 
-                if (_lookTargetTransform == null)
+                if (_lookTargetTransform == null || _forceRotationDirection)
                 {
                     if (_rotationDirectionControl != Vector3.zero)
                     {

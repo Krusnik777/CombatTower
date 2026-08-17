@@ -57,6 +57,16 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _onSwitchTargetPressedObservable = onSwitchTargetPressed;
         }
 
+        public void ResetTargetAndDisableInputListener()
+        {
+            _lockOnInputListenerDisposable?.Dispose();
+
+            if (CurrentEnemy != null)
+            {
+                TrySetTarget(true);
+            }
+        }
+
         private void TrySetTarget(bool byInput = false)
         {
             if (IsEnabled)

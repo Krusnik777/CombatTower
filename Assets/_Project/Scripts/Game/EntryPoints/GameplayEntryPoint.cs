@@ -57,6 +57,7 @@ namespace CombatTower.Game.EntryPoints
 
             var inputService = sceneContainer.Resolve<GameInputService>();
             m_cameraRotation.Bind(inputService);
+            sceneContainer.RegisterInstance(m_cameraRotation);
 
             var playerConfigsProvider = sceneContainer.Resolve<PlayerConfigsProvider>();
 

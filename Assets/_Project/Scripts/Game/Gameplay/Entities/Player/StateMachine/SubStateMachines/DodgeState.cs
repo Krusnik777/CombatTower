@@ -78,7 +78,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             if (!_guardHolded) return;
 
             DisposeOfListeners();
-            
+
             _parentStateMachine.SetState<GuardState>();
         }
 
@@ -129,17 +129,39 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             if (_lockOnHandler.CurrentEnemy != null)
             {
-                var localDirection = _player.Rigidbody.transform.InverseTransformDirection(direction);
+                var localDirection = _player.Movement.GetLocalLookDirection(direction);
 
-                if (Mathf.Abs(localDirection.x) < Mathf.Abs(localDirection.z))
+                if (Mathf.Abs(localDirection.x) < 0.9f || Mathf.Abs(localDirection.x) < Mathf.Abs(localDirection.z))
                 {
+                    var deltaAngle = _player.Movement.GetDeltaAngleBetweenDirectionAndLookTarget(direction);
+
+                    if (deltaAngle > -60f && deltaAngle <= 60f)
+                    {
+                        _player.Movement.SetRotationDirection(direction, 5000f, true);
+                    }
+                    else if (deltaAngle > 60f && deltaAngle <= 120f)
+                    {
+                        SetRotationDirectionByDefault(direction);
+                    }
+                    else if (deltaAngle < -60f && deltaAngle >= -120f)
+                    {
+                        SetRotationDirectionByDefault(direction);
+                    }
+                    else
+                    {
+                        _player.Movement.SetRotationDirection(-direction, 5000f, true);
+                    }
+
                     localDirection.Normalize();
+
                     _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
                     _player.Animator.SetFloat(_forwardMoveFloat, localDirection.z);
                 }
                 else
                 {
                     localDirection.Normalize();
+                    SetRotationDirectionByDefault(direction);
+
                     _player.Animator.SetFloat(_forwardMoveFloat, 0);
                     _player.Animator.SetFloat(_sidewardMoveFloat, localDirection.x);
                 }
@@ -147,9 +169,14 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 return;
             }
 
-            _player.Movement.SetRotationDirection(direction, _player.ParametersConfig.RotationSpeed);
+            SetRotationDirectionByDefault(direction);
             _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
             _player.Animator.SetFloat(_forwardMoveFloat, direction != Vector3.zero ? 1 : -1f);
+        }
+
+        private void SetRotationDirectionByDefault(Vector3 direction)
+        {
+            _player.Movement.SetRotationDirection(direction, _player.ParametersConfig.RotationSpeed);
         }
     }
 }
