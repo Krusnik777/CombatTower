@@ -23,11 +23,13 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private IState _previousState;
         private bool _isRoll;
         private bool _guardHolded;
+        private bool _holdAttackPending;
 
         private IDisposable _dodgeInputListenerDisposable;
         private IDisposable _dodgeFinishListenerDisposable;
         private IDisposable _guardListenerDisposable;
         private IDisposable _guardLinkListenerDisposable;
+        private CompositeDisposable _holdAttackListenersDisposables;
 
         public DodgeState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer)
         {
@@ -48,6 +50,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _previousState = previousState;
             _isRoll = false;
             _guardHolded = false;
+            _holdAttackPending = false;
 
             _dodgeInputListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ =>
             {
@@ -64,6 +67,12 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _guardLinkListenerDisposable = _player.EventsCollector.OnDodgeToGuardLink.Subscribe(TryLinkToGuard);
 
             _guardListenerDisposable = _gameInputService.Guard.Subscribe(value => _guardHolded = value);
+
+            _holdAttackListenersDisposables = new()
+            {
+                _gameInputService.OnAttackPressed.Where(v => v == true).Subscribe(_ => _holdAttackPending = true),
+                _gameInputService.OnAttackCancel.Subscribe(_ => _holdAttackPending = false)
+            };
 
             _player.Movement.IsControlledByRootMotion = true;
             _lockOnHandler.IsEnabled = false;
@@ -90,12 +99,17 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _lockOnHandler.IsEnabled = true;
         }
 
-        private void DisposeOfListeners(bool includeGuardListener = true)
+        private void DisposeOfListeners(bool includeGuardListenerAndHoldAttackListeners = true)
         {
             _dodgeInputListenerDisposable?.Dispose();
             _dodgeFinishListenerDisposable?.Dispose();
-            if (includeGuardListener) _guardListenerDisposable?.Dispose();
             _guardLinkListenerDisposable?.Dispose();
+
+            if (includeGuardListenerAndHoldAttackListeners)
+            {
+                _guardListenerDisposable?.Dispose();
+                _holdAttackListenersDisposables?.Dispose();
+            }
         }
 
         private void OnDodgeEnd(int dodgeType)
@@ -103,6 +117,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             if (_isRoll && dodgeType != 1) return;
 
             DisposeOfListeners();
+
+            _player.Animator.SetFloat(_sidewardMoveFloat, 0f);
+            _player.Animator.SetFloat(_forwardMoveFloat, 0f);
 
             if (_guardHolded)
             {
@@ -112,7 +129,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             }
 
             if (_previousState is CalmState) _parentStateMachine.SetState<CalmState>();
-            if (_previousState is BattleState) _parentStateMachine.SetState<BattleState, bool>(false);
+            if (_previousState is BattleState)
+            {
+                if (_holdAttackPending) _parentStateMachine.SetState<BattleState, BattleState.EntryTag>(BattleState.EntryTag.HoldAttack);
+                else _parentStateMachine.SetState<BattleState, BattleState.EntryTag>(BattleState.EntryTag.Movement);
+            }
         }
 
         private void SetDirection()

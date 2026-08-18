@@ -35,7 +35,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             {
                 DisposeOfListeners();
 
-                _parentStateMachine.SetState<BattleState, bool>(false);
+                _parentStateMachine.SetState<BattleState, BattleState.EntryTag>(BattleState.EntryTag.Movement);
             });
 
             _player.Movement.IsControlledByRootMotion = true;

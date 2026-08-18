@@ -29,7 +29,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             {
                 _guardEndListenerDisposable?.Dispose();
 
-                _parentStateMachine.SetState<BattleState, bool>(false);
+                _parentStateMachine.SetState<BattleState, BattleState.EntryTag>(BattleState.EntryTag.Movement);
             });
         }
 

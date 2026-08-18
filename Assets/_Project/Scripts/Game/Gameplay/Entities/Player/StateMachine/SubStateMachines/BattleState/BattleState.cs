@@ -4,8 +4,16 @@ using R3;
 
 namespace CombatTower.Game.Gameplay.Entities.Player
 {
-    public class BattleState : IEnterableState<bool>
+    public class BattleState : IEnterableState<BattleState.EntryTag>
     {
+        public enum EntryTag
+        {
+            SimpleAttack,
+            HoldAttack,
+            ChangeWeapon,
+            Movement
+        }
+
         public enum ExitTag
         {
             Timer,
@@ -30,7 +38,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _sceneContainer = sceneContainer;
         }
 
-        public void Enter(bool startByAttack)
+        public void Enter(EntryTag entryTag)
         {
             _player.Animator.SetBool(_battleStateBool, true);
             
@@ -49,8 +57,14 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 }
             });
 
-            if (startByAttack) _battleStateMachine.SetState<AttackState>();
-            else _battleStateMachine.SetState<BattleMovementState>();
+            switch(entryTag)
+            {
+                case EntryTag.SimpleAttack : _battleStateMachine.SetState<AttackState, bool>(false); break;
+                case EntryTag.HoldAttack : _battleStateMachine.SetState<AttackState, bool>(true); break;
+                case EntryTag.ChangeWeapon : _battleStateMachine.SetState<BattleMovementState>(); break;
+                case EntryTag.Movement : _battleStateMachine.SetState<BattleMovementState>(); break;
+                default : _battleStateMachine.SetState<BattleMovementState>(); break;
+            }
         }
 
         public void Exit()

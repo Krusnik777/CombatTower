@@ -10,7 +10,8 @@ namespace CombatTower.Game.Services
     {
         public Subject<Unit> OnTestButtonPressed { get; private set; } = new();
         
-        public Subject<Unit> OnAttackPressed { get; private set; } = new();
+        public Subject<bool> OnAttackPressed { get; private set; } = new();
+        public Subject<Unit> OnAttackCancel { get; private set; } = new();
 
         public Subject<Unit> OnDodgePressed { get; private set; } = new();
         public Subject<Unit> OnLockOnPressed { get; private set; } = new();
@@ -26,6 +27,8 @@ namespace CombatTower.Game.Services
         private UIInputController _uiInputController;
         public UIInputController UIInputController => _uiInputController;
 
+        private bool _isHoldAttack;
+
         private IDisposable _anyButtonPressListenerDisposable;
 
         public GameInputService()
@@ -39,7 +42,10 @@ namespace CombatTower.Game.Services
 
             _gameInput.Player.TestButton.performed += OnTestButton;
 
-            _gameInput.Player.Attack.performed += OnAttack;
+            _gameInput.Player.Attack.performed += OnHoldAttack;
+            _gameInput.Player.Attack.started += OnAttackStarted;
+            _gameInput.Player.Attack.canceled += OnAttackCanceled;
+
             _gameInput.Player.Dodge.performed += OnDodge;
 
             _gameInput.Player.Guard.started += OnGuardStart;
@@ -57,7 +63,10 @@ namespace CombatTower.Game.Services
 
             _gameInput.Player.TestButton.performed -= OnTestButton;
 
-            _gameInput.Player.Attack.performed -= OnAttack;
+            _gameInput.Player.Attack.performed -= OnHoldAttack;
+            _gameInput.Player.Attack.started -= OnAttackStarted;
+            _gameInput.Player.Attack.canceled -= OnAttackCanceled;
+
             _gameInput.Player.Dodge.performed -= OnDodge;
 
             _gameInput.Player.Guard.started -= OnGuardStart;
@@ -117,9 +126,25 @@ namespace CombatTower.Game.Services
             OnTestButtonPressed?.OnNext(Unit.Default);
         }
 
-        private void OnAttack(InputAction.CallbackContext context)
+        private void OnAttackStarted(InputAction.CallbackContext context)
         {
-            OnAttackPressed?.OnNext(Unit.Default);
+            _isHoldAttack = false;
+        }
+
+        private void OnHoldAttack(InputAction.CallbackContext context)
+        {
+            _isHoldAttack = true;
+
+            OnAttackPressed?.OnNext(true);
+        }
+
+        private void OnAttackCanceled(InputAction.CallbackContext context)
+        {
+            if (!_isHoldAttack) OnAttackPressed?.OnNext(false);
+
+            _isHoldAttack = false;
+
+            OnAttackCancel?.OnNext(Unit.Default);
         }
 
         private void OnDodge(InputAction.CallbackContext context)

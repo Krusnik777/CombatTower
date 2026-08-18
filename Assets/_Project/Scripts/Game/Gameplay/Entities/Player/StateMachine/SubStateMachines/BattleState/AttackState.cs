@@ -7,9 +7,10 @@ using UnityEngine;
 
 namespace CombatTower.Game.Gameplay.Entities.Player
 {
-    public class AttackState : IEnterableState
+    public class AttackState : IEnterableState<bool>
     {
-        private const string _attackComboStartTrigger = "AttackComboStart";
+        private const string _simpleAttackTrigger = "SimpleAttack";
+        private const string _holdAttackTrigger = "HoldAttack";
         private const string _attackComboInt = "AttackCombo";
 
         private IStateMachine _parentStateMachine;
@@ -22,6 +23,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         private int _currentCombo;
         private bool _isChainable;
+        
+        private bool _isHoldAttack;
+        private bool _isHoldAttackPending;
 
         private IDisposable _comboWindowListenerDisposable;
         private IDisposable _dodgeListenerDisposable;
@@ -35,11 +39,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _sceneContainer = sceneContainer;
             _gameInputService = _sceneContainer.Resolve<GameInputService>();
             _lockOnHandler = _sceneContainer.Resolve<LockOnHandler>();
-            
+
             _enemyDetector = new EnemyDetector(Root.LayerMasks.Enemy, _player.Rigidbody.transform, _player.ParametersConfig.CloseTargetDetectionRange);
         }
 
-        public void Enter()
+        public void Enter(bool isHoldAttack)
         {
             DisposeOfListeners();
 
@@ -48,15 +52,17 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 _player.EventsCollector.OnAttackStart.Subscribe(OnAttackStarted),
                 _player.EventsCollector.OnAttackExecute.Subscribe(OnAttackExecuted),
                 _player.EventsCollector.OnAttackFinish.Subscribe(OnAttackFinished),
-                _gameInputService.OnAttackPressed.Subscribe(_ => OnAttackPressed())
+                _gameInputService.OnAttackPressed.Subscribe(OnAttackPressed)
             };
 
             _currentCombo = 1;
+            _isHoldAttack = isHoldAttack;
+            _isHoldAttackPending = false;
 
             _player.Movement.IsControlledByRootMotion = true;
             _player.Movement.SetRotationDirection(GetDirection(Vector3.zero));
             _player.Animator.SetInteger(_attackComboInt, _currentCombo);
-            _player.Animator.SetTrigger(_attackComboStartTrigger);
+            _player.Animator.SetTrigger(isHoldAttack ? _holdAttackTrigger : _simpleAttackTrigger);
         }
 
         public void Exit()
@@ -76,17 +82,31 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         private void OnAttackStarted(int comboNumber)
         {
-            
+
         }
 
         private void OnAttackExecuted(int comboNumber)
         {
+            if (_isHoldAttack) return;
+
+            if (_isHoldAttackPending)
+            {
+                HandlePendingHoldAttack();
+                return;
+            }
+
             StartListenToCombo();
             StartListenDodgeOrGuard();
         }
-
+        
         private void OnAttackFinished(int comboNumber)
         {
+            if (_isHoldAttackPending)
+            {
+                HandlePendingHoldAttack();
+                return;
+            }
+
             _attackEventsListenerDisposables?.Dispose();
             StopListenToCombo();
             StopListenDodgeAndGuard();
@@ -94,25 +114,45 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _parentStateMachine.SetState<BattleMovementState>();
         }
 
-        private void OnAttackPressed()
+        private void OnAttackPressed(bool isHoldAttack)
         {
-            if (_isChainable)
-            {
-                StopListenToCombo();
-                StopListenDodgeAndGuard();
-                _currentCombo++;
+            if (_isHoldAttack || _isHoldAttackPending) return;
 
-                _player.Movement.SetRotationDirection(GetDirection(_gameInputService.GetMovementInput()), _player.ParametersConfig.RotationSpeed);
-                //_player.Animator.SetTrigger(_attackComboStartTrigger + _currentCombo.ToString());
-                _player.Animator.SetInteger(_attackComboInt, _currentCombo);
+            if (isHoldAttack)
+            {
+                _isHoldAttackPending = true;
             }
+            else
+            {
+                if (_isChainable) HandleNextAttack();
+            }
+        }
+
+        private void HandleNextAttack(bool isHoldAttack = false)
+        {
+            StopListenToCombo();
+            StopListenDodgeAndGuard();
+            _currentCombo++;
+            if (isHoldAttack && _currentCombo >= _player.ParametersConfig.MaxCombo) _currentCombo = _player.ParametersConfig.MaxCombo;
+
+            _player.Movement.SetRotationDirection(GetDirection(_gameInputService.GetMovementInput()), _player.ParametersConfig.RotationSpeed);
+            _player.Animator.SetInteger(_attackComboInt, _currentCombo);
+            _player.Animator.SetTrigger(isHoldAttack ? _holdAttackTrigger : _simpleAttackTrigger);
+        }
+
+        private void HandlePendingHoldAttack()
+        {
+            _isHoldAttack = true;
+            _isHoldAttackPending = false;
+
+            HandleNextAttack(true);
         }
 
         private void StartListenToCombo()
         {
             _comboWindowListenerDisposable?.Dispose();
 
-            if (_currentCombo == _player.ParametersConfig.MaxCombo) return;
+            if (_currentCombo >= _player.ParametersConfig.MaxCombo) return;
 
             _isChainable = true;
 

@@ -19,7 +19,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             DisposeOfListeners();
 
-            _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(_ => OnAttack());
+            _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(OnAttack);
             _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ => OnDodge());
             _guardListenerDisposable = _gameInputService.Guard.Where(v => v == true).Subscribe(_ => OnGuard());
         }
@@ -38,11 +38,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _guardListenerDisposable?.Dispose();
         }
 
-        private void OnAttack()
+        private void OnAttack(bool isHoldAttack)
         {
             DisposeOfListeners();
 
-            _parentStateMachine.SetState<BattleState, bool>(true);
+            _parentStateMachine.SetState<BattleState, BattleState.EntryTag>(isHoldAttack ? BattleState.EntryTag.HoldAttack : BattleState.EntryTag.SimpleAttack);
         }
 
         private void OnDodge()

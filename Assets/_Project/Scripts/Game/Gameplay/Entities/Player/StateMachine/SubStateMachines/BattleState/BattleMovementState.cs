@@ -25,7 +25,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             _player.Animator.SetBool(_battleStateBool, true);
 
-            _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(_ => OnAttack());
+            _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(OnAttack);
             _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ => OnDodge());
             _guardListenerDisposable = _gameInputService.Guard.Where(v => v == true).Subscribe(_ => OnGuard());
             _returnToCalmTimerListenerDisposable = Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(_ => UpdateTimer());
@@ -46,11 +46,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _returnToCalmTimerListenerDisposable?.Dispose();
         }
 
-        private void OnAttack()
+        private void OnAttack(bool isHoldAttack)
         {
             DisposeOfListeners();
             
-            _parentStateMachine.SetState<AttackState>();
+            _parentStateMachine.SetState<AttackState, bool>(isHoldAttack);
         }
 
         private void OnDodge()
