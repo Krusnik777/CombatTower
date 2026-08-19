@@ -19,7 +19,7 @@ MonoBehaviour:
   <RotationSpeedInGuard>k__BackingField: 5
   <DodgeInvulnerabilityWindowMs>k__BackingField: 200
   <MaxCombo>k__BackingField: 5
-  <ComboWindowMs>k__BackingField: 200
+  <ComboWindowMs>k__BackingField: 350
   <CloseTargetDetectionRange>k__BackingField: 3
   <LockOnDetectionRange>k__BackingField: 8
   <CooldownAfterLockOnSwitchTargetMs>k__BackingField: 250

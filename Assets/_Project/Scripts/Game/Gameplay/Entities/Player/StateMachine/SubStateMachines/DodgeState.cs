@@ -128,7 +128,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 return;
             }
 
-            if (_previousState is CalmState) _parentStateMachine.SetState<CalmState>();
+            if (_previousState is CalmMovementState) _parentStateMachine.SetState<CalmMovementState>();
             if (_previousState is BattleState)
             {
                 if (_holdAttackPending) _parentStateMachine.SetState<BattleState, BattleState.EntryTag>(BattleState.EntryTag.HoldAttack);

@@ -29,5 +29,11 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             _playerWeaponStateMachine?.Dispose();
         }
+
+        public void SetWeaponActive(bool state)
+        {
+            _view.BeltWeaponTransform.gameObject.SetActive(!state);
+            _view.WeaponHolderTransform.gameObject.SetActive(state);
+        }
     }
 }

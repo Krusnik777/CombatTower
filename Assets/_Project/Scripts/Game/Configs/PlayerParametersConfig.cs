@@ -17,7 +17,7 @@ namespace CombatTower.Game.Configs
         [field: SerializeField] public float DodgeInvulnerabilityWindowMs { get; private set; } = 200f;
         [field: Header("Attack")]
         [field: SerializeField] public int MaxCombo { get; private set; } = 5;
-        [field: SerializeField] public float ComboWindowMs { get; private set; } = 200f;
+        [field: SerializeField] public float ComboWindowMs { get; private set; } = 350f;
         [field: SerializeField] public float CloseTargetDetectionRange { get; private set; } = 3f;
         [field: Header("Lock-On")]
         [field: SerializeField] public float LockOnDetectionRange { get; private set; } = 8f;

@@ -26,7 +26,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _player.Animator.SetLayerWeight(0, 1f);
 
             //_playerStateMachine?.Dispose();
-            _playerStateMachine.SetState<CalmState>(); // TEMP
+            _playerStateMachine.SetState<CalmMovementState>(); // TEMP
         }
 
         public void Exit()

@@ -34,7 +34,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_C_8 0
+  m_Name: Hold Attack 4
   m_Speed: 0.75
   m_CycleOffset: 0
   m_Transitions:
@@ -157,7 +157,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_A_4
+  m_Name: Simple Attack 4
   m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
@@ -346,7 +346,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_A_2
+  m_Name: Simple Attack 2
   m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
@@ -805,7 +805,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_A_7
+  m_Name: Hold Attack 2
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1259,7 +1259,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_C_8
+  m_Name: Hold Attack 1
   m_Speed: 0.75
   m_CycleOffset: 0
   m_Transitions:
@@ -1369,7 +1369,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_A_8
+  m_Name: Hold Attack 5
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -2232,8 +2232,8 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_A_1
-  m_Speed: 1.25
+  m_Name: Simple Attack 1
+  m_Speed: 1.15
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -6672193341322229930}
@@ -2528,7 +2528,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_A_3
+  m_Name: Simple Attack 3
   m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
@@ -2995,7 +2995,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_A_5
+  m_Name: Simple Attack 5
   m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
@@ -3107,7 +3107,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OneHand_Base_Attack_B_1
+  m_Name: Hold Attack 3
   m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:

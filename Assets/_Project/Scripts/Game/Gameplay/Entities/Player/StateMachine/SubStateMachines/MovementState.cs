@@ -6,7 +6,7 @@ using CombatTower.Game.Services;
 
 namespace CombatTower.Game.Gameplay.Entities.Player
 {
-    public class MovementState : IEnterableState
+    public abstract class MovementState : IEnterableState
     {
         protected const string _battleStateBool = "IsBattleState";
         protected const string _forwardMoveFloat = "ForwardMove";
@@ -34,7 +34,6 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         public virtual void Enter()
         {
-            _player.Animator.SetBool(_battleStateBool, false);
             _player.Movement.Bind(_gameInputService, _movementSpeed, _rotationSpeed);
 
             _animatorMovementUpdateDisposable?.Dispose();

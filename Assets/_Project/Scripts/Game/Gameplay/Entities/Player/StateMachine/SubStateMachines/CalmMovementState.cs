@@ -5,19 +5,22 @@ using System;
 
 namespace CombatTower.Game.Gameplay.Entities.Player
 {
-    public class CalmState : MovementState
+    public class CalmMovementState : MovementState
     {
         private IDisposable _attackListenerDisposable;
         private IDisposable _dodgeListenerDisposable;
         private IDisposable _guardListenerDisposable;
 
-        public CalmState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer) : base(parentStateMachine, player, sceneContainer) { }
+        public CalmMovementState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer) : base(parentStateMachine, player, sceneContainer) { }
 
         public override void Enter()
         {
             base.Enter();
 
             DisposeOfListeners();
+
+            _player.SetWeaponActive(false);
+            _player.Animator.SetBool(_battleStateBool, false);
 
             _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(OnAttack);
             _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ => OnDodge());

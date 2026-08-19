@@ -23,6 +23,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             _player.Animator.SetBool(_hasShieldBool, false); // TO for something like _player.HasShield;
             _player.Animator.SetBool(_guardStateBool, true);
+
+            _player.SetWeaponActive(true);
             _player.Animator.SetBool(_battleStateBool, false);
 
             _guardEndListenerDisposable = _gameInputService.Guard.Where(v => v == false).Subscribe(_ =>

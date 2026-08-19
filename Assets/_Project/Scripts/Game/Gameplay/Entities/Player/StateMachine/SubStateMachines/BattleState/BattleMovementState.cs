@@ -23,7 +23,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
             DisposeOfListeners();
 
-            _player.Animator.SetBool(_battleStateBool, true);
+            //_player.SetWeaponActive(true);
+            //_player.Animator.SetBool(_battleStateBool, true);
 
             _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(OnAttack);
             _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ => OnDodge());

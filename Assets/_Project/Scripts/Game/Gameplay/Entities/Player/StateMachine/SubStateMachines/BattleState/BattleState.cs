@@ -40,6 +40,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         public void Enter(EntryTag entryTag)
         {
+            _player.SetWeaponActive(true);
             _player.Animator.SetBool(_battleStateBool, true);
             
             _battleStateMachine?.Dispose();
@@ -49,7 +50,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             {
                 switch(exitTag)
                 {
-                    case ExitTag.Timer : _parentStateMachine.SetState<CalmState>(); return;
+                    case ExitTag.Timer : _parentStateMachine.SetState<CalmMovementState>(); return;
                     case ExitTag.Dodge : _parentStateMachine.SetState<DodgeState, IState>(this); return;
                     case ExitTag.Guard : _parentStateMachine.SetState<GuardState>(); return;
 

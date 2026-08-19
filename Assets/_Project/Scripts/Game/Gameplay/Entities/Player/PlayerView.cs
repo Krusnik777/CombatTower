@@ -8,5 +8,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         [field: SerializeField] public Rigidbody Rigidbody { get; private set; }
         [field: SerializeField] public PlayerAvatarMovement Movement { get; private set; }
         [field: SerializeField] public AnimatorEventsCollector EventsCollector { get; private set; }
+        [field: SerializeField] public Transform BeltWeaponTransform { get; private set; }
+        [field: SerializeField] public Transform WeaponHolderTransform { get; private set; }
     }
 }
