@@ -3,35 +3,10 @@ using DI;
 
 namespace CombatTower.Game.Gameplay.Entities.Player
 {
-    public class OnehandedWeaponState : IEnterableState
+    public class OnehandedWeaponState : ChosenWeaponState
     {
-        private IStateMachine _parentStateMachine;
-        private DIContainer _sceneContainer;
-        private Player _player;
+        protected override int _weaponLayerIndex => 0;
 
-        private PlayerStateMachine _playerStateMachine;
-
-        public OnehandedWeaponState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer)
-        {
-            _parentStateMachine = parentStateMachine;
-            _sceneContainer = sceneContainer;
-
-            _player = player;
-            
-            _playerStateMachine = new(_player, _sceneContainer);
-        }
-
-        public void Enter()
-        {
-            _player.Animator.SetLayerWeight(0, 1f);
-
-            //_playerStateMachine?.Dispose();
-            _playerStateMachine.SetState<CalmMovementState>(); // TEMP
-        }
-
-        public void Exit()
-        {
-            _playerStateMachine?.Dispose();
-        }
+        public OnehandedWeaponState(IStateMachine parentStateMachine, Player player, DIContainer sceneContainer) : base(parentStateMachine, player, sceneContainer) { }
     }
 }

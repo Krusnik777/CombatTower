@@ -63,11 +63,14 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _player.Movement.SetRotationDirection(GetDirection(Vector3.zero));
             _player.Animator.SetInteger(_attackComboInt, _currentCombo);
             _player.Animator.SetTrigger(isHoldAttack ? _holdAttackTrigger : _simpleAttackTrigger);
+
+            _player.IsNotStaggeredByDamage = _isHoldAttack;
         }
 
         public void Exit()
         {
             _player.Movement.IsControlledByRootMotion = false;
+            _player.IsNotStaggeredByDamage = false;
 
             DisposeOfListeners();
         }
@@ -138,6 +141,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _player.Movement.SetRotationDirection(GetDirection(_gameInputService.GetMovementInput()), _player.ParametersConfig.RotationSpeed);
             _player.Animator.SetInteger(_attackComboInt, _currentCombo);
             _player.Animator.SetTrigger(isHoldAttack ? _holdAttackTrigger : _simpleAttackTrigger);
+
+            _player.IsNotStaggeredByDamage = _isHoldAttack;
         }
 
         private void HandlePendingHoldAttack()
