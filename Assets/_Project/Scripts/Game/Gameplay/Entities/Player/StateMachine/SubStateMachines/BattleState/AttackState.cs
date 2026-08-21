@@ -13,6 +13,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private const string _holdAttackTrigger = "HoldAttack";
         private const string _attackComboInt = "AttackCombo";
 
+        private const float _simpleAttackRange = 3f; // TEMP
+        private const float _holdAttackRange = 4.5f; // TEMP
+
         private IStateMachine _parentStateMachine;
         private DIContainer _sceneContainer;
         private Player _player;
@@ -20,6 +23,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private LockOnHandler _lockOnHandler;
 
         private IEnemyDetector _enemyDetector;
+        private IDamageDealer _damageDealer;
 
         private int _currentCombo;
         private bool _isChainable;
@@ -55,6 +59,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 _gameInputService.OnAttackPressed.Subscribe(OnAttackPressed)
             };
 
+            CreateDamageDealer(isHoldAttack);
+
             _currentCombo = 1;
             _isHoldAttack = isHoldAttack;
             _isHoldAttackPending = false;
@@ -81,6 +87,17 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _comboWindowListenerDisposable?.Dispose();
             _dodgeListenerDisposable?.Dispose();
             _guardListenerDisposable?.Dispose();
+            _damageDealer?.Dispose();
+        }
+
+        private void CreateDamageDealer(bool isHoldAttack)
+        {
+            _damageDealer?.Dispose();
+            _damageDealer = new WeaponDamageDealer(Root.LayerMasks.Enemy, 
+                                                   _player.Rigidbody.transform, 
+                                                   isHoldAttack ? _holdAttackRange : _simpleAttackRange, 
+                                                   _player.EventsCollector, 
+                                                   _player.WeaponHolderTransform);
         }
 
         private void OnAttackStarted(int comboNumber)
@@ -137,6 +154,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             StopListenDodgeAndGuard();
             _currentCombo++;
             if (isHoldAttack && _currentCombo >= _player.ParametersConfig.MaxCombo) _currentCombo = _player.ParametersConfig.MaxCombo;
+
+            CreateDamageDealer(isHoldAttack);
 
             _player.Movement.SetRotationDirection(GetDirection(_gameInputService.GetMovementInput()), _player.ParametersConfig.RotationSpeed);
             _player.Animator.SetInteger(_attackComboInt, _currentCombo);

@@ -6,6 +6,7 @@ using R3;
 using UnityEngine;
 using CombatTower.Game.Gameplay.Entities.Player;
 using CombatTower.Game.Gameplay;
+using CombatTower.Game.Gameplay.Entities.Enemy;
 
 namespace CombatTower.Game.EntryPoints
 {
@@ -15,6 +16,7 @@ namespace CombatTower.Game.EntryPoints
         [SerializeField] private PlayerView m_playerView;
         [SerializeField] private CameraRotation m_cameraRotation;
         [SerializeField] private LockOnCamera m_lockOnCamera;
+        [SerializeField] private EnemyView[] m_enemies; // TEMP
 
         private Subject<GameplayExitParameters> _onEnd;
 
@@ -67,6 +69,13 @@ namespace CombatTower.Game.EntryPoints
 
             var player = new Player(playerConfigsProvider.ParametersConfig, m_playerView, sceneContainer);
             sceneContainer.RegisterInstance(player);
+
+            // TEMP
+
+            for (int i = 0; i < m_enemies.Length; i++)
+            {
+                var enemy = new Enemy(m_enemies[i]);
+            }
         }
 
         private void SetupUI(DIContainer sceneContainer)

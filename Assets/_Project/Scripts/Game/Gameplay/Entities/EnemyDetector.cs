@@ -33,6 +33,7 @@ namespace CombatTower.Game.Gameplay.Entities
                 var potentialTarget = colliders[i].transform.root.GetComponent<EnemyView>();
 
                 if (potentialTarget == null) continue;
+                if (!potentialTarget.enabled) continue;
                 if (currentDetectedEnemy != null && potentialTarget == currentDetectedEnemy) continue;
 
                 var directionBetween = (potentialTarget.transform.position - _detectionCenterTransform.position).normalized;
@@ -77,6 +78,7 @@ namespace CombatTower.Game.Gameplay.Entities
                 var potentialTarget = colliders[i].transform.root.GetComponent<EnemyView>();
 
                 if (potentialTarget == null) continue;
+                if (!potentialTarget.enabled) continue;
                 if (currentEnemy != null && potentialTarget == currentEnemy) continue;
 
                 var dir = (potentialTarget.transform.position - _detectionCenterTransform.position).normalized;

@@ -772,6 +772,7 @@ GameObject:
   - component: {fileID: 822514036}
   - component: {fileID: 822514035}
   - component: {fileID: 822514034}
+  - component: {fileID: 822514039}
   m_Layer: 10
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -792,6 +793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Enemy.EnemyView
   <LookTarget>k__BackingField: {fileID: 1979635309}
+  <Damageable>k__BackingField: {fileID: 822514039}
 --- !u!65 &822514035
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -886,6 +888,18 @@ Transform:
   - {fileID: 1979635309}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &822514039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822514033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0b37e0096cfd942b41b39e9f13f3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Damageable
 --- !u!1 &989995995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,6 +1100,7 @@ GameObject:
   - component: {fileID: 1034819922}
   - component: {fileID: 1034819921}
   - component: {fileID: 1034819920}
+  - component: {fileID: 1034819925}
   m_Layer: 10
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -1106,6 +1121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Enemy.EnemyView
   <LookTarget>k__BackingField: {fileID: 1550944871}
+  <Damageable>k__BackingField: {fileID: 1034819925}
 --- !u!65 &1034819921
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1200,6 +1216,18 @@ Transform:
   - {fileID: 1550944871}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1034819925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034819919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0b37e0096cfd942b41b39e9f13f3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Damageable
 --- !u!1 &1043450297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1950,6 +1978,7 @@ GameObject:
   - component: {fileID: 1501103491}
   - component: {fileID: 1501103490}
   - component: {fileID: 1501103489}
+  - component: {fileID: 1501103494}
   m_Layer: 10
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -1970,6 +1999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Enemy.EnemyView
   <LookTarget>k__BackingField: {fileID: 1513616758}
+  <Damageable>k__BackingField: {fileID: 1501103494}
 --- !u!65 &1501103490
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2064,6 +2094,18 @@ Transform:
   - {fileID: 1513616758}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1501103494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501103488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0b37e0096cfd942b41b39e9f13f3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Damageable
 --- !u!1 &1513616757
 GameObject:
   m_ObjectHideFlags: 0
@@ -2139,6 +2181,7 @@ GameObject:
   - component: {fileID: 1586286588}
   - component: {fileID: 1586286587}
   - component: {fileID: 1586286591}
+  - component: {fileID: 1586286592}
   m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
@@ -2253,6 +2296,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Enemy.EnemyView
   <LookTarget>k__BackingField: {fileID: 1043450298}
+  <Damageable>k__BackingField: {fileID: 1586286592}
+--- !u!114 &1586286592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586286586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0b37e0096cfd942b41b39e9f13f3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Damageable
 --- !u!1 &1697774523
 GameObject:
   m_ObjectHideFlags: 0
@@ -2702,6 +2758,12 @@ MonoBehaviour:
   m_playerView: {fileID: 1371145737}
   m_cameraRotation: {fileID: 438332276}
   m_lockOnCamera: {fileID: 989996001}
+  m_enemies:
+  - {fileID: 1586286591}
+  - {fileID: 1501103489}
+  - {fileID: 1034819920}
+  - {fileID: 822514034}
+  - {fileID: 2140594646}
 --- !u!4 &2117270561
 Transform:
   m_ObjectHideFlags: 0
@@ -2730,6 +2792,7 @@ GameObject:
   - component: {fileID: 2140594648}
   - component: {fileID: 2140594647}
   - component: {fileID: 2140594646}
+  - component: {fileID: 2140594651}
   m_Layer: 10
   m_Name: Cube (4)
   m_TagString: Untagged
@@ -2750,6 +2813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Enemy.EnemyView
   <LookTarget>k__BackingField: {fileID: 435100215}
+  <Damageable>k__BackingField: {fileID: 2140594651}
 --- !u!65 &2140594647
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2844,6 +2908,18 @@ Transform:
   - {fileID: 435100215}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2140594651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140594645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a0b37e0096cfd942b41b39e9f13f3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.Entities.Damageable
 --- !u!1001 &4625917513779916321
 PrefabInstance:
   m_ObjectHideFlags: 0

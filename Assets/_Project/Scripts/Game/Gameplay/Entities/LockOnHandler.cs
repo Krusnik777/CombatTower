@@ -102,7 +102,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 _switchTargetListenerDisposable = _onSwitchTargetPressedObservable.Subscribe(TrySwitchTarget);
                 _targetLostUpdateListenerDisposable = Observable.EveryUpdate().Subscribe(_ =>
                 {
-                    if (CurrentEnemy == null || CurrentEnemy != null && !_enemyDetector.IsCloseEnoughToTarget(CurrentEnemy))
+                    if (CurrentEnemy == null ||
+                        CurrentEnemy != null && !_enemyDetector.IsCloseEnoughToTarget(CurrentEnemy) ||
+                        CurrentEnemy != null && !CurrentEnemy.enabled)
                     {
                         _targetLostUpdateListenerDisposable?.Dispose();
                         TrySetTarget();

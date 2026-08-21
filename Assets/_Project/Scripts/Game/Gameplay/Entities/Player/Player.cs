@@ -20,6 +20,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         public Animator Animator => _view.Animator;
         public PlayerAvatarMovement Movement => _view.Movement;
         public AnimatorEventsCollector EventsCollector => _view.EventsCollector;
+        public Transform WeaponHolderTransform => _view.WeaponHolderTransform; // TEMP ?
 
         private PlayerWeaponStateMachine _playerWeaponStateMachine;
         private CompositeDisposable _changesListenerDisposables;

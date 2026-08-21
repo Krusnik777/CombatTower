@@ -1,4 +1,3 @@
-using CombatTower.Game.Configs;
 using Random = UnityEngine.Random;
 
 namespace CombatTower.Game.Gameplay.HealthSystem
@@ -10,10 +9,12 @@ namespace CombatTower.Game.Gameplay.HealthSystem
             //bool isCritical = Random.value >= 1 - data.CriticalChance;
             //bool isArmorBreak = Random.value >= 1 - data.ArmorBreakChance;
 
+            var damageValue = Random.Range(1, 5); // Temp
+
             var damage = new Damage()
             {
-                BaseValue = /*data.Damage*/1,
-                ResultValue = /*data.Damage*/1,
+                BaseValue = /*data.Damage*/damageValue,
+                ResultValue = /*data.Damage*/damageValue,
                 Modifiers = new()
             };
 
