@@ -13,8 +13,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private const string _holdAttackTrigger = "HoldAttack";
         private const string _attackComboInt = "AttackCombo";
 
-        private const float _simpleAttackRange = 3f; // TEMP
-        private const float _holdAttackRange = 4.5f; // TEMP
+        private const float _simpleAttackRange = 1f; // TEMP
+        private const float _holdAttackRange = 1.75f; // TEMP
 
         private IStateMachine _parentStateMachine;
         private DIContainer _sceneContainer;

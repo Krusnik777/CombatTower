@@ -4,6 +4,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 {
     public class PlayerView : MonoBehaviour
     {
+        [field: SerializeField] public Battle.BattleGridView BattleGridView { get; private set; }
         [field: SerializeField] public Damageable Damageable { get; private set; }
         [field: SerializeField] public Animator Animator { get; private set; }
         [field: SerializeField] public Rigidbody Rigidbody { get; private set; }

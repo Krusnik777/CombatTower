@@ -9,6 +9,8 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         public bool IsControlledByRootMotion { get; set; }
 
+        private const float _keyboardInputUpdateSpeed = 10f;
+
         private GameInputService _gameInputService;
         private float _movementSpeed;
         private float _rotationSpeed;
@@ -134,7 +136,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             }
 
             var moveDirection = _gameInputService.GetMovementInput();
-            _directionControl = moveDirection;
+            var isGamepad = InputDeviceDetectService.CurrentControlDevie is UnityEngine.InputSystem.Gamepad;
+            var keyboardDirection = moveDirection != Vector3.zero ? Vector3.Lerp(_directionControl, moveDirection, _keyboardInputUpdateSpeed * Time.deltaTime) : Vector3.zero;
+            _directionControl = isGamepad ? moveDirection : keyboardDirection;
             //_directionControl.Normalize();
         }
     }

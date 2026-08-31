@@ -7,6 +7,8 @@ using UnityEngine;
 using CombatTower.Game.Gameplay.Entities.Player;
 using CombatTower.Game.Gameplay;
 using CombatTower.Game.Gameplay.Entities.Enemy;
+using CombatTower.Game.Gameplay.Battle;
+using CombatTower.Game.Settings;
 
 namespace CombatTower.Game.EntryPoints
 {
@@ -69,6 +71,9 @@ namespace CombatTower.Game.EntryPoints
 
             var player = new Player(playerConfigsProvider.ParametersConfig, m_playerView, sceneContainer);
             sceneContainer.RegisterInstance(player);
+
+            var battleStageController = new BattleStageController(sceneContainer.Resolve<ISettingsProvider>().GameSettings, m_playerView.BattleGridView);
+            sceneContainer.RegisterInstance<IBattleStageController>(battleStageController);
 
             // TEMP
 

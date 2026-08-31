@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 using Loading;
 using R3;
 using DI;
 using CombatTower.Game.EntryPoints;
 using CombatTower.Game.Services;
+using CombatTower.Game.Settings;
 
 namespace CombatTower.Game.Root
 {
@@ -130,6 +130,9 @@ namespace CombatTower.Game.Root
 
         private void SetupProviders()
         {
+            var settingsProvider = new SettingsProvider();
+            _rootContainer.RegisterInstance<ISettingsProvider>(settingsProvider);
+            
             var playerConfigProvider = new PlayerConfigsProvider();
             _rootContainer.RegisterInstance(playerConfigProvider);
 
