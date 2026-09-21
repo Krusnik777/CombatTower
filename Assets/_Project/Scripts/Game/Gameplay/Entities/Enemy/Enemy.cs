@@ -1,6 +1,7 @@
 using System;
 using CombatTower.Game.Gameplay.HealthSystem;
 using R3;
+using UnityEngine;
 
 namespace CombatTower.Game.Gameplay.Entities.Enemy
 {
@@ -12,17 +13,23 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
         public Health Health { get; }
 
         private EnemyView _view;
+        public Animator Animator => _view.Animator;
+        public AnimatorEventsCollector EventsCollector => _view.EventsCollector;
+
+        private EnemyStateMachine _stateMachine;
 
         private IDisposable _damageableListenerDisposable;
         private IDisposable _deathDisposable;
 
-        public Enemy(EnemyView view)
+        public Enemy(EnemyView view, DI.DIContainer sceneContainer)
         {
             _view = view;
 
             Health = new(new DamageProcessor(), 10); // healthValue is TEMP
 
             _damageableListenerDisposable = _view.Damageable.OnHitted.Subscribe(TakeDamage);
+
+            _stateMachine = new(this, sceneContainer);
         }
 
         public void Dispose()
@@ -38,15 +45,13 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
 
             if (Health.TakeDamage(ref damage, out int resultedHealthValue))
             {
-                UnityEngine.Debug.Log("ENEMY HIT");
-
                 if (resultedHealthValue <= 0)
                 {
-                    UnityEngine.Debug.Log("ENEMY DEAD");
+                    _stateMachine.SetState<DeathState>();
 
                     _view.enabled = false;
 
-                    _deathDisposable = Observable.Interval(TimeSpan.FromSeconds(3f)).Subscribe(_ =>
+                    _deathDisposable = Observable.Interval(TimeSpan.FromSeconds(5f)).Subscribe(_ =>
                     {
                         _view.gameObject.SetActive(false);
 
@@ -58,6 +63,7 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
                 }
                 else
                 {
+                    _stateMachine.SetState<DamageState>();
                     // Show hit effect ?
                     OnDamage?.OnNext(damage);
                     //_sounds.Play(PlayerSounds.Damage); // ???

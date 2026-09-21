@@ -79,7 +79,7 @@ namespace CombatTower.Game.EntryPoints
 
             for (int i = 0; i < m_enemies.Length; i++)
             {
-                var enemy = new Enemy(m_enemies[i]);
+                var enemy = new Enemy(m_enemies[i], sceneContainer);
             }
         }
 
