@@ -11,6 +11,5 @@ namespace CombatTower.Game.Services
         {
             ParametersConfig = Resources.Load<PlayerParametersConfig>("Settings/PlayerParametersConfig");
         }
-    
     }
 }

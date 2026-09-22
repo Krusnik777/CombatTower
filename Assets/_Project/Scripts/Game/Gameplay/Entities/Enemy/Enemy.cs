@@ -1,4 +1,5 @@
 using System;
+using CombatTower.Game.Configs;
 using CombatTower.Game.Gameplay.HealthSystem;
 using R3;
 using UnityEngine;
@@ -11,8 +12,11 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
         public Subject<Damage> OnDamage { get; }
 
         public Health Health { get; }
-
+        
+        private EnemyConfig _config;
         private EnemyView _view;
+
+        public EnemyConfig Config => _config;
         public Animator Animator => _view.Animator;
         public AnimatorEventsCollector EventsCollector => _view.EventsCollector;
 
@@ -21,11 +25,12 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
         private IDisposable _damageableListenerDisposable;
         private IDisposable _deathDisposable;
 
-        public Enemy(EnemyView view, DI.DIContainer sceneContainer)
+        public Enemy(EnemyConfig config, EnemyView view, DI.DIContainer sceneContainer)
         {
+            _config = config;
             _view = view;
 
-            Health = new(new DamageProcessor(), 10); // healthValue is TEMP
+            Health = new(new DamageProcessor(), config.MaxHealth);
 
             _damageableListenerDisposable = _view.Damageable.OnHitted.Subscribe(TakeDamage);
 

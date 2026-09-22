@@ -18,7 +18,7 @@ namespace CombatTower.Game.EntryPoints
         [SerializeField] private PlayerView m_playerView;
         [SerializeField] private CameraRotation m_cameraRotation;
         [SerializeField] private LockOnCamera m_lockOnCamera;
-        [SerializeField] private EnemyView[] m_enemies; // TEMP
+        [SerializeField] private EnemySpawnPoint[] m_enemiesSpawnPoints;
 
         private Subject<GameplayExitParameters> _onEnd;
 
@@ -75,11 +75,14 @@ namespace CombatTower.Game.EntryPoints
             var battleStageController = new BattleStageController(sceneContainer.Resolve<ISettingsProvider>().GameSettings, m_playerView.BattleGridView);
             sceneContainer.RegisterInstance<IBattleStageController>(battleStageController);
 
+            var enemyFactory = new EnemyFactory(sceneContainer);
+            sceneContainer.RegisterInstance(enemyFactory);
+
             // TEMP
 
-            for (int i = 0; i < m_enemies.Length; i++)
+            for (int i = 0; i < m_enemiesSpawnPoints.Length; i++)
             {
-                var enemy = new Enemy(m_enemies[i], sceneContainer);
+                enemyFactory.CreateEnemy(m_enemiesSpawnPoints[i]);
             }
         }
 

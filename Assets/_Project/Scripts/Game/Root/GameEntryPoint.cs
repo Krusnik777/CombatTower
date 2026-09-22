@@ -133,8 +133,11 @@ namespace CombatTower.Game.Root
             var settingsProvider = new SettingsProvider();
             _rootContainer.RegisterInstance<ISettingsProvider>(settingsProvider);
             
-            var playerConfigProvider = new PlayerConfigsProvider();
-            _rootContainer.RegisterInstance(playerConfigProvider);
+            var playerConfigsProvider = new PlayerConfigsProvider();
+            _rootContainer.RegisterInstance(playerConfigsProvider);
+
+            var enemyConfigsProvider = new EnemyConfigsProvider();
+            _rootContainer.RegisterInstance(enemyConfigsProvider);
 
             var interactiveMasksLoader = new InteractiveLayerMasksLoader();
             interactiveMasksLoader.LoadMasksAndAssignToLayerMasks();
