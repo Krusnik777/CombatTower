@@ -27,7 +27,7 @@ namespace CombatTower.Game.Services
         private UIInputController _uiInputController;
         public UIInputController UIInputController => _uiInputController;
 
-        private bool _isHoldAttack;
+        public bool IsHoldAttack { get; private set; }
 
         private IDisposable _anyButtonPressListenerDisposable;
 
@@ -128,21 +128,21 @@ namespace CombatTower.Game.Services
 
         private void OnAttackStarted(InputAction.CallbackContext context)
         {
-            _isHoldAttack = false;
+            IsHoldAttack = false;
         }
 
         private void OnHoldAttack(InputAction.CallbackContext context)
         {
-            _isHoldAttack = true;
+            IsHoldAttack = true;
 
             OnAttackPressed?.OnNext(true);
         }
 
         private void OnAttackCanceled(InputAction.CallbackContext context)
         {
-            if (!_isHoldAttack) OnAttackPressed?.OnNext(false);
+            if (!IsHoldAttack) OnAttackPressed?.OnNext(false);
 
-            _isHoldAttack = false;
+            IsHoldAttack = false;
 
             OnAttackCancel?.OnNext(Unit.Default);
         }

@@ -32,7 +32,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             DisposeOfListeners();
 
             _lockOnHandler.ResetTargetAndDisableInputListener();
-            _cameraRotation.Bind(null);
+            _cameraRotation.UnbindInput();
 
             _player.Movement.IsControlledByRootMotion = true;
             _player.Animator.SetInteger(_deathTypeInt, UnityEngine.Random.Range(0, _deathTypesAmount));

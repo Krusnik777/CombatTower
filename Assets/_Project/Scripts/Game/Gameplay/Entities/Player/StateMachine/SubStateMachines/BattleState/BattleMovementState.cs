@@ -26,6 +26,12 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             //_player.SetWeaponActive(true);
             //_player.Animator.SetBool(_battleStateBool, true);
 
+            if (_gameInputService.IsHoldAttack)
+            {
+                OnAttack(true);
+                return;
+            }
+
             _attackListenerDisposable = _gameInputService.OnAttackPressed.Subscribe(OnAttack);
             _dodgeListenerDisposable = _gameInputService.OnDodgePressed.Subscribe(_ => OnDodge());
             _guardListenerDisposable = _gameInputService.Guard.Where(v => v == true).Subscribe(_ => OnGuard());

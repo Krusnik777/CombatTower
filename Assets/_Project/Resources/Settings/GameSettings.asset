@@ -14,3 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Settings.GameSettings
   <GridCapacity>k__BackingField: 12
   <AttackCapacity>k__BackingField: 10
+  <GamepadCameraSettings>k__BackingField:
+    Sensitivity: {x: 10, y: 0.02}
+    SmoothKoef: 10
+    DecayRate: 0.95
+  <MouseCameraSettings>k__BackingField:
+    Sensitivity: {x: 15, y: 0.02}
+    SmoothKoef: 15
+    DecayRate: 0.95

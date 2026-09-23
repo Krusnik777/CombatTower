@@ -8,7 +8,7 @@ namespace CombatTower.Game.Services
     {
         private static ReactiveProperty<InputDevice> _currentDevice;
         public static Observable<InputDevice> OnCurrentControlDeviceChange => _currentDevice;
-        public static InputDevice CurrentControlDevie => _currentDevice.Value;
+        public static InputDevice CurrentControlDevice => _currentDevice.Value;
 
         public void Dispose()
         {

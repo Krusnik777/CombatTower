@@ -29,7 +29,6 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         private bool _isChainable;
         
         private bool _isHoldAttack;
-        private bool _isHoldAttackPending;
 
         private IDisposable _comboWindowListenerDisposable;
         private IDisposable _dodgeListenerDisposable;
@@ -59,18 +58,10 @@ namespace CombatTower.Game.Gameplay.Entities.Player
                 _gameInputService.OnAttackPressed.Subscribe(OnAttackPressed)
             };
 
-            CreateDamageDealer(isHoldAttack);
-
-            _currentCombo = 1;
-            _isHoldAttack = isHoldAttack;
-            _isHoldAttackPending = false;
-
             _player.Movement.IsControlledByRootMotion = true;
-            _player.Movement.SetRotationDirection(GetDirection(Vector3.zero));
-            _player.Animator.SetInteger(_attackComboInt, _currentCombo);
-            _player.Animator.SetTrigger(isHoldAttack ? _holdAttackTrigger : _simpleAttackTrigger);
 
-            _player.IsNotStaggeredByDamage = _isHoldAttack;
+            _currentCombo = 0;
+            HandleNextAttack(isHoldAttack);
         }
 
         public void Exit()
@@ -109,24 +100,12 @@ namespace CombatTower.Game.Gameplay.Entities.Player
         {
             if (_isHoldAttack) return;
 
-            if (_isHoldAttackPending)
-            {
-                HandlePendingHoldAttack();
-                return;
-            }
-
             StartListenToCombo();
             StartListenDodgeOrGuard();
         }
         
         private void OnAttackFinished(int comboNumber)
         {
-            if (_isHoldAttackPending)
-            {
-                HandlePendingHoldAttack();
-                return;
-            }
-
             _attackEventsListenerDisposables?.Dispose();
             StopListenToCombo();
             StopListenDodgeAndGuard();
@@ -136,16 +115,9 @@ namespace CombatTower.Game.Gameplay.Entities.Player
 
         private void OnAttackPressed(bool isHoldAttack)
         {
-            if (_isHoldAttack || _isHoldAttackPending) return;
+            if (_isHoldAttack) return;
 
-            if (isHoldAttack)
-            {
-                _isHoldAttackPending = true;
-            }
-            else
-            {
-                if (_isChainable) HandleNextAttack();
-            }
+            if (_isChainable) HandleNextAttack(isHoldAttack);
         }
 
         private void HandleNextAttack(bool isHoldAttack = false)
@@ -153,6 +125,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             StopListenToCombo();
             StopListenDodgeAndGuard();
             _currentCombo++;
+            _isHoldAttack = isHoldAttack;
             if (isHoldAttack && _currentCombo >= _player.ParametersConfig.MaxCombo) _currentCombo = _player.ParametersConfig.MaxCombo;
 
             CreateDamageDealer(isHoldAttack);
@@ -162,14 +135,6 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             _player.Animator.SetTrigger(isHoldAttack ? _holdAttackTrigger : _simpleAttackTrigger);
 
             _player.IsNotStaggeredByDamage = _isHoldAttack;
-        }
-
-        private void HandlePendingHoldAttack()
-        {
-            _isHoldAttack = true;
-            _isHoldAttackPending = false;
-
-            HandleNextAttack(true);
         }
 
         private void StartListenToCombo()

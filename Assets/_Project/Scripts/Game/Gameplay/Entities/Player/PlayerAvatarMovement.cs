@@ -136,7 +136,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             }
 
             var moveDirection = _gameInputService.GetMovementInput();
-            var isGamepad = InputDeviceDetectService.CurrentControlDevie is UnityEngine.InputSystem.Gamepad;
+            var isGamepad = InputDeviceDetectService.CurrentControlDevice is UnityEngine.InputSystem.Gamepad;
             var keyboardDirection = moveDirection != Vector3.zero ? Vector3.Lerp(_directionControl, moveDirection, _keyboardInputUpdateSpeed * Time.deltaTime) : Vector3.zero;
             _directionControl = isGamepad ? moveDirection : keyboardDirection;
             //_directionControl.Normalize();

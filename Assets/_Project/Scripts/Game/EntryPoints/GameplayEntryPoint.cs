@@ -60,7 +60,9 @@ namespace CombatTower.Game.EntryPoints
             sceneContainer.RegisterInstance(GameplayTags.EXIT, exitInvoker as IEventInvoker);
 
             var inputService = sceneContainer.Resolve<GameInputService>();
-            m_cameraRotation.Bind(inputService);
+            var settingsProvider = sceneContainer.Resolve<ISettingsProvider>();
+
+            m_cameraRotation.Bind(inputService, settingsProvider.GameSettings.GetCameraSettings());
             sceneContainer.RegisterInstance(m_cameraRotation);
 
             var playerConfigsProvider = sceneContainer.Resolve<PlayerConfigsProvider>();
@@ -72,7 +74,7 @@ namespace CombatTower.Game.EntryPoints
             var player = new Player(playerConfigsProvider.ParametersConfig, m_playerView, sceneContainer);
             sceneContainer.RegisterInstance(player);
 
-            var battleStageController = new BattleStageController(sceneContainer.Resolve<ISettingsProvider>().GameSettings, m_playerView.BattleGridView);
+            var battleStageController = new BattleStageController(settingsProvider.GameSettings, m_playerView.BattleGridView);
             sceneContainer.RegisterInstance<IBattleStageController>(battleStageController);
 
             var enemyFactory = new EnemyFactory(sceneContainer);
