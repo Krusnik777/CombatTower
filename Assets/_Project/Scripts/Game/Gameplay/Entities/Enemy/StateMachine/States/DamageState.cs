@@ -5,11 +5,14 @@ using R3;
 
 namespace CombatTower.Game.Gameplay.Entities.Enemy
 {
-    public class DamageState : IEnterableState
+    public class DamageState : IEnterableState<HealthSystem.Damage>
     {
         private const string _getHitTrigger = "GetHit";
         private const string _hitTypeInt = "HitType";
-        private const int _hitTypesAmount = 5;
+        private readonly int[] _frontSimpleHits = new[]{ 0, 1, 2 };
+        private readonly int[] _frontHardHits = new[]{ 2 };
+        private readonly int[] _backSimpleHits = new[]{ 3, 4 };
+        private readonly int[] _backHardHits = new[]{ 4 };
 
         private IStateMachine _parentStateMachine;
         private DIContainer _sceneContainer;
@@ -24,7 +27,7 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
             _sceneContainer = sceneContainer;
         }
 
-        public void Enter()
+        public void Enter(HealthSystem.Damage damage)
         {
             DisposeOfListeners();
 
@@ -35,7 +38,18 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
                 _parentStateMachine.SetState<IdleState>();
             });
 
-            _enemy.Animator.SetInteger(_hitTypeInt, UnityEngine.Random.Range(0, _hitTypesAmount));
+            int hitIndex = 0;
+
+            if (damage.Direction == HealthSystem.DamageDirection.Back)
+            {
+                hitIndex = _backSimpleHits[UnityEngine.Random.Range(0, _backSimpleHits.Length)];
+            }
+            else
+            {
+                hitIndex = _frontSimpleHits[UnityEngine.Random.Range(0, _frontSimpleHits.Length)];
+            }
+
+            _enemy.Animator.SetInteger(_hitTypeInt, hitIndex);
             _enemy.Animator.SetTrigger(_getHitTrigger);
         }
 

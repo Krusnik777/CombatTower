@@ -41,7 +41,7 @@ namespace CombatTower.Game.Gameplay.Entities.Player
             {
                 if (_player.IsNotStaggeredByDamage) return;
 
-                _playerStateMachine.SetState<DamageState>();
+                _playerStateMachine.SetState<DamageState, HealthSystem.Damage>(damage);
             });
 
             _player.Animator.SetLayerWeight(_weaponLayerIndex, 1f);

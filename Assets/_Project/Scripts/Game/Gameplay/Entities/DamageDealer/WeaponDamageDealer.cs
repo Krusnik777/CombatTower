@@ -18,7 +18,7 @@ namespace CombatTower.Game.Gameplay.Entities
 
         private Action _onAttack;
 
-        private HashSet<IDamageable> _hittedDamageables;
+        private Dictionary<IDamageable, Transform> _hittedDamageablesMap;
 
         private IDisposable _attackStartedListenerDisposable;
         private IDisposable _attackCheckDisposable;
@@ -32,7 +32,7 @@ namespace CombatTower.Game.Gameplay.Entities
             _eventsCollector = eventsCollector;
             _swordTransform = swordTransform;
 
-            _hittedDamageables = new();
+            _hittedDamageablesMap = new();
 
             _attackStartedListenerDisposable = _eventsCollector.OnAttackStart.Subscribe(_ => StartTrackingEnemies());
             _attackExecutedListenerDisposable = _eventsCollector.OnAttackExecute.Subscribe(_ => DamageTrackedEnemies());
@@ -62,16 +62,16 @@ namespace CombatTower.Game.Gameplay.Entities
             _attackCheckDisposable?.Dispose();
             _attackExecutedListenerDisposable?.Dispose();
 
-            foreach (var damageable in _hittedDamageables)
+            foreach (var damageableData in _hittedDamageablesMap)
             {
                 //var damage = DamageFactory.Create(_attackConfig);
-                var damage = DamageFactory.Create();
-                damageable.Hit(damage);
+                var damage = DamageFactory.Create(_transform, damageableData.Value);
+                damageableData.Key.Hit(damage);
             }
 
             _onAttack?.Invoke();
 
-            _hittedDamageables.Clear();
+            _hittedDamageablesMap.Clear();
         }
 
         private void TrackEnemies()
@@ -84,15 +84,14 @@ namespace CombatTower.Game.Gameplay.Entities
                 var damageable = colliders[i].transform.GetComponent<IDamageable>();
 
                 if (damageable == null) continue;
-                if (_hittedDamageables.Contains(damageable)) continue;
+                if (_hittedDamageablesMap.ContainsKey(damageable)) continue;
 
                 Vector3 directionToDamageable = (colliders[i].transform.root.position - _transform.position).normalized;
-
                 float angle = Vector3.Angle(_transform.forward, directionToDamageable);
 
                 if (angle > _arcAngle) continue;
 
-                _hittedDamageables.Add(damageable);
+                _hittedDamageablesMap.Add(damageable, colliders[i].transform);
             }
         }
     }

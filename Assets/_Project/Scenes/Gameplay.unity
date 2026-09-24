@@ -572,9 +572,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatTower.Game.Gameplay.CameraRotation
   m_orbitalFollow: {fileID: 438332273}
-  m_baseSensitivity: {x: 10, y: 0.02}
-  m_smoothKoef: 10
-  m_decayRate: 0.95
 --- !u!1001 &546328074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1137,7 +1134,7 @@ MonoBehaviour:
   m_camera: {fileID: 989995998}
   m_closestRangeToLookTarget: 4
   m_lookTargetPositionChangeSpeed: 10
-  m_lookTargetMaxYPosition: 3
+  m_lookTargetMaxYPosition: 3.5
   m_lookTargetMinYPosition: 1
 --- !u!1 &1002197817
 GameObject:

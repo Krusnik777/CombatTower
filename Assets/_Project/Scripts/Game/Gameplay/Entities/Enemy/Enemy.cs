@@ -68,7 +68,7 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
                 }
                 else
                 {
-                    _stateMachine.SetState<DamageState>();
+                    _stateMachine.SetState<DamageState, Damage>(damage);
                     // Show hit effect ?
                     OnDamage?.OnNext(damage);
                     //_sounds.Play(PlayerSounds.Damage); // ???

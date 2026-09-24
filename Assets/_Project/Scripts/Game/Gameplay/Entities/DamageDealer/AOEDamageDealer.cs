@@ -41,7 +41,7 @@ namespace CombatTower.Game.Gameplay.Entities
             //_attackExecutedListenerDisposable?.Dispose();
 
             //var damage = DamageFactory.Create(_attackConfig);
-            var damage = DamageFactory.Create();
+            
 
             //Collider[] colliders = Physics.OverlapSphere(_transform.position, _attackConfig.Range, _targetMask);
             Collider[] colliders = Physics.OverlapSphere(_transform.position, _range, _targetMask);
@@ -50,7 +50,10 @@ namespace CombatTower.Game.Gameplay.Entities
             {
                 var damageable = colliders[i].transform.GetComponent<IDamageable>();
 
-                damageable?.Hit(damage);
+                if (damageable == null) continue;
+
+                var damage = DamageFactory.Create(_transform, colliders[i].transform);
+                damageable.Hit(damage);
             }
 
             _onAttack?.Invoke();
