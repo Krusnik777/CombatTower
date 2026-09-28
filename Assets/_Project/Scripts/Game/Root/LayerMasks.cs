@@ -6,5 +6,6 @@ namespace CombatTower.Game.Root
     {
         public static LayerMask Player;
         public static LayerMask Enemy;
+        public static LayerMask ViewObstacle;
     }
 }

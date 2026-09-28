@@ -11,6 +11,7 @@ namespace CombatTower.Game.Services
 
             Root.LayerMasks.Player = config.Player;
             Root.LayerMasks.Enemy = config.Enemy;
+            Root.LayerMasks.ViewObstacle = config.ViewObstacle;
         }
     
     }

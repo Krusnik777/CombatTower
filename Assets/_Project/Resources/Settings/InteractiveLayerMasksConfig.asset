@@ -18,3 +18,6 @@ MonoBehaviour:
   <Enemy>k__BackingField:
     serializedVersion: 2
     m_Bits: 1024
+  <ViewObstacle>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 1

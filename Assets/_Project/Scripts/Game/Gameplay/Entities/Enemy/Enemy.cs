@@ -20,10 +20,13 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
         public Animator Animator => _view.Animator;
         public AnimatorEventsCollector EventsCollector => _view.EventsCollector;
 
+        public FieldOfView FieldOfView { get; private set; }
+
         private EnemyStateMachine _stateMachine;
 
         private IDisposable _damageableListenerDisposable;
         private IDisposable _deathDisposable;
+        private IDisposable _TEMPfieldOfViewListenerDisposable;
 
         public Enemy(EnemyConfig config, EnemyView view, DI.DIContainer sceneContainer)
         {
@@ -31,16 +34,27 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
             _view = view;
 
             Health = new(new DamageProcessor(), config.MaxHealth);
+            FieldOfView = new(view.FieldOfViewParameters, sceneContainer.Resolve<Player.Player>().Movement.transform);
 
             _damageableListenerDisposable = _view.Damageable.OnHitted.Subscribe(TakeDamage);
 
             _stateMachine = new(this, sceneContainer);
+
+            // TEMP
+
+            _TEMPfieldOfViewListenerDisposable = FieldOfView.CanSeeTarget.Subscribe(result =>
+            {
+                if (result) Debug.Log("[ENEMY] " + _view.gameObject.name + " SEE PLAYER");
+            });
         }
 
         public void Dispose()
         {
+            FieldOfView?.Dispose();
             _damageableListenerDisposable?.Dispose();
             _deathDisposable?.Dispose();
+
+            _TEMPfieldOfViewListenerDisposable?.Dispose();
         }
 
         private void TakeDamage(Damage damage)

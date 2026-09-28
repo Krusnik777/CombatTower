@@ -7,5 +7,6 @@ namespace CombatTower.Game.Configs
     {
         [field: SerializeField] public LayerMask Player { get; private set; }
         [field: SerializeField] public LayerMask Enemy { get; private set; }
+        [field: SerializeField] public LayerMask ViewObstacle { get; private set; }
     }
 }

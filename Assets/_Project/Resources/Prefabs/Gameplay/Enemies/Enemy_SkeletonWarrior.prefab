@@ -31,6 +31,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2182299910205740251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &445070707402348980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 83628271783103265}
+  - component: {fileID: 3974123095370448655}
+  m_Layer: 10
+  m_Name: FieldOfView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &83628271783103265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445070707402348980}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2182299910205740251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3974123095370448655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445070707402348980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40929af9be1e47346b1b697a0debb302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatTower.FieldOfViewParameters
+  <Radius>k__BackingField: 10
+  <Angle>k__BackingField: 90
+  <ViewOffset>k__BackingField: {x: 0, y: 1.7, z: 0}
+  m_gizmoColor: {r: 0.8773585, g: 0.6508295, b: 0.086908154, a: 1}
+  m_gizmoArcSteps: 32
 --- !u!1 &5849988418893150436
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,6 +113,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1159068482287752883}
+  - {fileID: 83628271783103265}
   - {fileID: 6608856827816297370}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104,6 +154,7 @@ MonoBehaviour:
   <EventsCollector>k__BackingField: {fileID: 6174921932564928385}
   <LookTarget>k__BackingField: {fileID: 6608856827816297370}
   <Damageable>k__BackingField: {fileID: 5774564028632557753}
+  <FieldOfViewParameters>k__BackingField: {fileID: 3974123095370448655}
 --- !u!114 &5774564028632557753
 MonoBehaviour:
   m_ObjectHideFlags: 0

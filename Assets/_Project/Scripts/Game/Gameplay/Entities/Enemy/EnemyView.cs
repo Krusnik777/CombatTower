@@ -8,5 +8,6 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
         [field: SerializeField] public AnimatorEventsCollector EventsCollector { get; private set; }
         [field: SerializeField] public Transform LookTarget { get; private set; }
         [field: SerializeField] public Damageable Damageable { get; private set; }
+        [field: SerializeField] public FieldOfViewParameters FieldOfViewParameters { get; private set; }
     }
 }
