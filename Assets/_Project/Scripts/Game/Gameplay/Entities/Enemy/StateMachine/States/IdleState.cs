@@ -24,6 +24,8 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
         {
             DisposeOfListeners();
 
+            _enemy.Agent.isStopped = true;
+
             _enemy.Animator.SetFloat(_forwardMoveFloat, 0f);
             _enemy.Animator.SetFloat(_sidewardMoveFloat, 0f);
         }

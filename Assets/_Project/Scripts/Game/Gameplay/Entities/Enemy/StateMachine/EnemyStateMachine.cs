@@ -10,11 +10,12 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
             _states = new()
             {
                 [typeof(IdleState)] = new IdleState(this, enemy, sceneContainer),
+                [typeof(PatrolState)] = new PatrolState(this, enemy, sceneContainer),
                 [typeof(DamageState)] = new DamageState(this, enemy, sceneContainer),
                 [typeof(DeathState)] = new DeathState(this, enemy, sceneContainer)
             };
 
-            SetState<IdleState>(); // TEMP?
+            SetState<PatrolState>(); // TEMP
         }
     }
 }

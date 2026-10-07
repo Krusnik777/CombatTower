@@ -27,7 +27,7 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
                     $"[Enemy Factory] Couldn't find prefab by name {config.PrefabName} in path {_prefabsPath} for config id {config.ID}");
 
             var enemyView = GameObject.Instantiate(enemyViewPrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
-            var enemy = new Enemy(config, enemyView, _sceneContainer);
+            var enemy = new Enemy(config, enemyView, _sceneContainer, spawnPoint.PatrolRoute);
 
             return enemy;
         }

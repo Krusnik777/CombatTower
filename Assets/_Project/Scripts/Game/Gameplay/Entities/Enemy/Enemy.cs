@@ -3,6 +3,7 @@ using CombatTower.Game.Configs;
 using CombatTower.Game.Gameplay.HealthSystem;
 using R3;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace CombatTower.Game.Gameplay.Entities.Enemy
 {
@@ -19,7 +20,9 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
         public EnemyConfig Config => _config;
         public Animator Animator => _view.Animator;
         public AnimatorEventsCollector EventsCollector => _view.EventsCollector;
+        public NavMeshAgent Agent => _view.Agent;
 
+        public PatrolPointView[] PatrolRoute { get; private set; }
         public FieldOfView FieldOfView { get; private set; }
 
         private EnemyStateMachine _stateMachine;
@@ -28,13 +31,14 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
         private IDisposable _deathDisposable;
         private IDisposable _TEMPfieldOfViewListenerDisposable;
 
-        public Enemy(EnemyConfig config, EnemyView view, DI.DIContainer sceneContainer)
+        public Enemy(EnemyConfig config, EnemyView view, DI.DIContainer sceneContainer, PatrolPointView[] patrolRoute)
         {
             _config = config;
             _view = view;
 
             Health = new(new DamageProcessor(), config.MaxHealth);
             FieldOfView = new(view.FieldOfViewParameters, sceneContainer.Resolve<Player.Player>().Movement.transform);
+            PatrolRoute = patrolRoute;
 
             _damageableListenerDisposable = _view.Damageable.OnHitted.Subscribe(TakeDamage);
 
