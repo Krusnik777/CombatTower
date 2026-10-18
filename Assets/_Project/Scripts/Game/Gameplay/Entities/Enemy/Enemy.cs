@@ -29,7 +29,6 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
 
         private IDisposable _damageableListenerDisposable;
         private IDisposable _deathDisposable;
-        private IDisposable _TEMPfieldOfViewListenerDisposable;
 
         public Enemy(EnemyConfig config, EnemyView view, DI.DIContainer sceneContainer, PatrolPointView[] patrolRoute)
         {
@@ -43,13 +42,6 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
             _damageableListenerDisposable = _view.Damageable.OnHitted.Subscribe(TakeDamage);
 
             _stateMachine = new(this, sceneContainer);
-
-            // TEMP
-
-            _TEMPfieldOfViewListenerDisposable = FieldOfView.CanSeeTarget.Subscribe(result =>
-            {
-                if (result) Debug.Log("[ENEMY] " + _view.gameObject.name + " SEE PLAYER");
-            });
         }
 
         public void Dispose()
@@ -57,8 +49,6 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
             FieldOfView?.Dispose();
             _damageableListenerDisposable?.Dispose();
             _deathDisposable?.Dispose();
-
-            _TEMPfieldOfViewListenerDisposable?.Dispose();
         }
 
         private void TakeDamage(Damage damage)

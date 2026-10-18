@@ -9,5 +9,6 @@ namespace CombatTower.Game.Configs
         [field: SerializeField] public string PrefabName { get; private set; }
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public int MaxHealth { get; private set; } = 10;
+        [field: SerializeField] public int GridWeight { get; private set; } = 2;
     }
 }

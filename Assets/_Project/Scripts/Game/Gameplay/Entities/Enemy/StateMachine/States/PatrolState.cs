@@ -21,6 +21,7 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
 
         private IDisposable _movementUpdateDisposable;
         private IDisposable _waitUpdateListenerDisposable;
+        private IDisposable _fieldOfViewListenerDisposable;
 
         public PatrolState(IStateMachine parentStateMachine, Enemy enemy, DIContainer sceneContainer)
         {
@@ -46,6 +47,11 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
             _enemy.Agent.SetDestination(_enemy.PatrolRoute[_currentPointIndex].transform.position);
 
             _movementUpdateDisposable = Observable.EveryUpdate().Subscribe(_ => UpdateMovement());
+
+            _fieldOfViewListenerDisposable = _enemy.FieldOfView.CanSeeTarget.Where(result => true).Subscribe(_ =>
+            {
+                _parentStateMachine.SetState<ChaseState>();
+            });
         }
 
         public void Exit()
@@ -57,6 +63,7 @@ namespace CombatTower.Game.Gameplay.Entities.Enemy
         {
             _movementUpdateDisposable?.Dispose();
             _waitUpdateListenerDisposable?.Dispose();
+            _fieldOfViewListenerDisposable?.Dispose();
         }
 
         private void UpdateMovement()
